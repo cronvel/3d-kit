@@ -12,16 +12,15 @@ var BrowserWindow = require( 'browser-window' ) ;
 // Get the crash reporter
 var crashReporter = require( 'crash-reporter' ) ;
 
-// Processus communication
-var ChildProcess = require( './ChildProcess.js' ) ;
-
 // Safely set the process' title from the package name
 process.title = require( './package.json' ).name ;
 
 
 
 // Start the crash reporter
-crashReporter.start() ;
+//crashReporter.start() ;
+
+console.log( process.versions ) ;
 
 
 
@@ -64,11 +63,8 @@ app.on( 'ready' , function() {
 	// Open dev tools?
 	if ( devTools ) { mainWindow.openDevTools() ; }
 	
-	mainWindow.command = { path: args[ 2 ] , args: args.slice( 3 ) } ;
-	mainWindow.childProcess = ChildProcess.create( args[ 2 ] , args.slice( 3 ) ) ;
-	
 	// and load the index.html of the app.
-	mainWindow.loadUrl( 'file://' + __dirname + '/front/terminal.html' ) ;
+	mainWindow.loadURL( 'file://' + __dirname + '/front/3d.html' ) ;
 	
 	// Emitted when the window is closed.
 	mainWindow.on( 'closed' , function() {
