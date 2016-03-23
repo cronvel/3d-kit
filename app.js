@@ -56,7 +56,7 @@ app.on( 'ready' , function() {
 	
 	// Create the browser window.
 	mainWindow = new BrowserWindow( {
-		width: 830 ,
+		width: 800 ,
 		height: 480
 	} ) ;
 	
@@ -64,7 +64,7 @@ app.on( 'ready' , function() {
 	if ( devTools ) { mainWindow.openDevTools() ; }
 	
 	// and load the index.html of the app.
-	mainWindow.loadURL( 'file://' + __dirname + '/front/3d.html' ) ;
+	mainWindow.loadURL( 'file://' + __dirname + '/html/3d.html' ) ;
 	
 	// Emitted when the window is closed.
 	mainWindow.on( 'closed' , function() {

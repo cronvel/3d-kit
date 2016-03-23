@@ -1,6 +1,6 @@
 {
   "name": "3d-kit",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A small 3D kit using Three.js inside Electron.",
   "main": "lib/3d.js",
   "directories": {
