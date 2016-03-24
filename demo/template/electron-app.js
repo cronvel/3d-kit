@@ -74,7 +74,7 @@ app.on( 'ready' , function() {
 	if ( devTools ) { mainWindow.openDevTools() ; }
 	
 	// and load the index.html of the app.
-	mainWindow.loadURL( 'file://' + __dirname + '/3d.html' ) ;
+	mainWindow.loadURL( 'file://' + __dirname + '/demo.html' ) ;
 	
 	// Emitted when the window is closed.
 	mainWindow.on( 'closed' , function() {

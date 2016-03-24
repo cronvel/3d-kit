@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "main": "app.js",
+  "main": "electron-app.js",
   "version": "0.0.1",
   "description": "Demo.",
   "author": "Cédric Ronvel",

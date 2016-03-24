@@ -1,6 +1,6 @@
 {
   "name": "3d-kit",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A small 3D kit using Three.js.",
   "main": "lib/tdk.js",
   "directories": {
@@ -11,7 +11,7 @@
     "dom-kit": "^0.1.0",
     "math-kit": "^0.3.2",
     "stats.js": "0.0.14-master",
-    "three": "^0.75.0",
+    "three": "0.75.0",
     "tree-kit": "^0.5.18"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 
 var three = require( 'three' ) ;
+var tdk = require( '../../lib/tdk.js' ) ;
 
 var scene, camera, renderer;
 var geometry, material, mesh;
