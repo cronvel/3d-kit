@@ -4,7 +4,7 @@
 	
 	// Predefined globals (node.js, browser, etc...)
 	"node" : true,
-	"browser" : false,
+	"browser" : true,
 	"jquery" : false,
 	
 	

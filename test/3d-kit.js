@@ -1,7 +1,5 @@
 /*
-	Test Terminal
-
-	Copyright (c) 2015 Cédric Ronvel 
+	Copyright (c) 2016 Cédric Ronvel 
 	
 	The MIT License (MIT)
 

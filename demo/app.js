@@ -1,6 +1,18 @@
 
 
 
+// Ensure we are running 'electron' instead of 'node'
+var versions = process.versions ;
+//console.log( versions ) ;
+
+if ( ! versions.electron )
+{
+	console.log( "This program should be loaded by 'electron' instead of 'node'" ) ;
+	process.exit() ;
+}
+
+
+
 // Load modules
 
 // Module to control application life.
@@ -19,8 +31,6 @@ process.title = require( './package.json' ).name ;
 
 // Start the crash reporter
 //crashReporter.start() ;
-
-console.log( process.versions ) ;
 
 
 
@@ -64,7 +74,7 @@ app.on( 'ready' , function() {
 	if ( devTools ) { mainWindow.openDevTools() ; }
 	
 	// and load the index.html of the app.
-	mainWindow.loadURL( 'file://' + __dirname + '/html/3d.html' ) ;
+	mainWindow.loadURL( 'file://' + __dirname + '/3d.html' ) ;
 	
 	// Emitted when the window is closed.
 	mainWindow.on( 'closed' , function() {

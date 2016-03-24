@@ -1,0 +1,9 @@
+{
+  "name": "demo",
+  "main": "app.js",
+  "version": "0.0.1",
+  "description": "Demo.",
+  "author": "Cédric Ronvel",
+  "license": "MIT",
+  "private": true
+}
