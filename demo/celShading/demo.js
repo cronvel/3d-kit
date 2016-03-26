@@ -44,6 +44,8 @@ var cube ;
 var pointLight , pointLightAngle = 0 , lightSphere ;
 
 
+
+
 init() ;
 animate() ;
 
@@ -113,8 +115,53 @@ function init()
 	floorTexture.wrapS = floorTexture.wrapT = three.RepeatWrapping ; 
 	floorTexture.anisotropy = 4 ;	// Anisotrope filtering for this texture
 	floorTexture.repeat.set( 4 , 4 ) ;
-	//var floorMaterial = new three.MeshBasicMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
+	
+	
+	/*
 	var floorMaterial = new three.MeshLambertMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
+	//three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_a_frag.glsl' , 'utf8' ) ;
+	//three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_b_frag.glsl' , 'utf8' ) ;
+	three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_c_frag.glsl' , 'utf8' ) ;
+	//*/
+	
+	//var floorMaterial = new three.MeshLambertMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
+	
+	//*
+	// Lambert material replication, hard to figure out, see:
+	// http://stackoverflow.com/questions/21928178/replicating-meshlambertmaterial-using-shadermaterial-ignores-textures
+	
+	var defines = {};
+	defines[ "USE_MAP" ] = "";
+	
+	var uniforms = three.UniformsUtils.merge( [
+		three.UniformsLib[ "common" ],
+		three.UniformsLib[ "aomap" ],
+		three.UniformsLib[ "lightmap" ],
+		three.UniformsLib[ "emissivemap" ],
+		three.UniformsLib[ "fog" ],
+		three.UniformsLib[ "lights" ],
+		{
+			"emissive" : { type: "c", value: new three.Color( 0x000000 ) }
+		}
+	] ) ;
+	
+	var shaderUniforms = three.UniformsUtils.clone( uniforms ) ;
+	shaderUniforms[ "map" ].value = floorTexture;
+	shaderUniforms[ "offsetRepeat" ].value.set( 0, 0, floorTexture.repeat.x, floorTexture.repeat.y );
+	
+	var floorMaterial = new three.ShaderMaterial( {
+		name: "TerrainShader",
+		defines     : defines,
+		uniforms    : shaderUniforms,
+		vertexShader: three.ShaderLib['lambert'].vertexShader ,
+		//fragmentShader: three.ShaderLib['lambert'].fragmentShader ,
+		fragmentShader: fs.readFileSync( __dirname + '/meshlambert_cel_c_frag.glsl' , 'utf8' ) ,
+		side: three.DoubleSide ,
+		fog:false,
+		lights:true
+	} ) ;
+	//*/
+	
 	var floorGeometry = new three.PlaneGeometry( 1000 , 1000 , 10 , 10 ) ;
 	var floor = new three.Mesh( floorGeometry , floorMaterial ) ;
 	floor.position.z = -60 ;
@@ -150,10 +197,6 @@ function init()
 	brickTexture.anisotropy = 16 ;
 	
 	var cubeMaterial = new three.MeshLambertMaterial( { map: brickTexture } ) ;
-	//three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_a_frag.glsl' , 'utf8' ) ;
-	three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_b_frag.glsl' , 'utf8' ) ;
-	//three.ShaderLib['lambert'].fragmentShader = fs.readFileSync( __dirname + '/meshlambert_cel_c_frag.glsl' , 'utf8' ) ;
-	
 	var cubeGeometry = new three.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new three.Mesh( cubeGeometry , cubeMaterial ) ;
@@ -202,7 +245,7 @@ function update()
 	cube.rotation.z += 0.001 ;
 	
 	
-	pointLightAngle += 0.01 ;
+	pointLightAngle += 0.002 ;
 	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 200 * Math.sin( pointLightAngle / 100 ) ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
