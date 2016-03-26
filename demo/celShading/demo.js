@@ -126,7 +126,7 @@ function init()
 	
 	//var floorMaterial = new three.MeshLambertMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
 	
-	//*
+	/*
 	// Lambert material replication, hard to figure out, see:
 	// http://stackoverflow.com/questions/21928178/replicating-meshlambertmaterial-using-shadermaterial-ignores-textures
 	
@@ -161,6 +161,13 @@ function init()
 		lights:true
 	} ) ;
 	//*/
+	
+	var floorMaterial = tdk.Material( {
+		map: floorTexture ,
+		side: three.DoubleSide ,
+		fragmentShader: fs.readFileSync( __dirname + '/../../lib/shaders/cel-c.fragment.glsl' , 'utf8' ) ,
+		lights:true
+	} ) ;
 	
 	var floorGeometry = new three.PlaneGeometry( 1000 , 1000 , 10 , 10 ) ;
 	var floor = new three.Mesh( floorGeometry , floorMaterial ) ;
