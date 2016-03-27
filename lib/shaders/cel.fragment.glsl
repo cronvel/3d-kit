@@ -3,7 +3,7 @@
 uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform float opacity;
-//uniform vec2Array celStep[2];
+uniform vec2 celStep[5];
 
 varying vec3 vLightFront;
 
@@ -91,7 +91,16 @@ void main() {
 	float vlf = vLightFront[0];
 	
 	// Clean and simple
-	if (vlf >= 0.75) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.0), alpha); }
-	else if (vlf >= 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.3), alpha); }
-	else { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.5), alpha); }
+	//if (vlf >= 0.75) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.0), alpha); }
+	//else if (vlf >= 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.3), alpha); }
+	//else { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.5), alpha); }
+	
+	// Clean and simple
+	//if (vlf <= 0.5 ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, 0.5) , alpha); }
+	if (vlf <= celStep[0][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[0][1]), alpha); }
+	else if (vlf <= celStep[1][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[1][1]), alpha); }
+	else if (vlf <= celStep[2][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[2][1]), alpha); }
+	else if (vlf <= celStep[3][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[3][1]), alpha); }
+	else if (vlf <= celStep[4][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[4][1]), alpha); }
+	else { gl_FragColor = vec4( mix( vec3(0.0), basecolor, 1.0), alpha); }
 }
