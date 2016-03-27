@@ -3,6 +3,7 @@
 uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform float opacity;
+//uniform vec2Array celStep[2];
 
 varying vec3 vLightFront;
 
@@ -90,8 +91,7 @@ void main() {
 	float vlf = vLightFront[0];
 	
 	// Clean and simple
-	if (vlf < 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.5), alpha); }
-	if (vlf >= 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.3), alpha); }
-	if (vlf >= 0.75) { gl_FragColor = vec4(mix( basecolor, vec3(1.0), 0.0), alpha); }
-	
+	if (vlf >= 0.75) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.0), alpha); }
+	else if (vlf >= 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.3), alpha); }
+	else { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.5), alpha); }
 }
