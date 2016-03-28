@@ -151,11 +151,23 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	//var r = new three.JSONLoader().parse( require( './test.json' ) , './' ) ;
+	//*
 	var loader = new three.JSONLoader() ;
-	//var r = loader.parse( require( './test.json' ) , './' ) ;
-	//var r = loader.parse( fs.readFileSync( __dirname + '/test.json' , 'utf8' ) , './' ) ;
-	//var modelGeometry = r.modelGeometry ;
+	var r = loader.parse( require( './test.json' ) ) ;
+	var r = loader.parse( fs.readFileSync( __dirname + '/test.json' , 'utf8' ) , './' ) ;
+	var modelGeometry = r.modelGeometry ;
+	var modelMaterial = r.modelGeometry ;
+	//scene.add( r ) ;
+	//*/
+	
+	/*
+	var loader = new three.ObjectLoader() ;
+	var r = loader.parse( require( './test.json' ) ) ;
+	r.position.set( 300 , 0 , 0 ) ;
+	r.scale.set( 100 , 100 , 100 ) ;
+	scene.add( r ) ;
+	//*/
+	
 	
 	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
 	brickTexture.anisotropy = 16 ;
