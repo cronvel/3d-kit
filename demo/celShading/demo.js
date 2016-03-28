@@ -151,6 +151,12 @@ function init()
 	// CUSTOM //
 	////////////
 	
+	//var r = new three.JSONLoader().parse( require( './test.json' ) , './' ) ;
+	var loader = new three.JSONLoader() ;
+	//var r = loader.parse( require( './test.json' ) , './' ) ;
+	//var r = loader.parse( fs.readFileSync( __dirname + '/test.json' , 'utf8' ) , './' ) ;
+	//var modelGeometry = r.modelGeometry ;
+	
 	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
 	brickTexture.anisotropy = 16 ;
 	
