@@ -1,9 +1,13 @@
 // Lambert fragment as of THREE r75
 
+// /!\ This shader works, but a lot of unecessary operations from the original Lambert fragment should be removed
+
 uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform float opacity;
-uniform vec2 celStep[5];
+
+// The material has at most 5 shades
+uniform vec3 celStep[5];
 
 // cel.vertex.glsl transmit that to us:
 varying vec3 celPosition;
@@ -162,12 +166,12 @@ void main() {
 	float vlf = ( vLightFront_cel[0] + vLightFront_cel[1] + vLightFront_cel[2] ) * 0.33333333333;
 	
 	// Clean and simple
-	if (vlf <= celStep[0][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[0][1]), alpha); }
-	else if (vlf <= celStep[1][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[1][1]), alpha); }
-	else if (vlf <= celStep[2][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[2][1]), alpha); }
-	else if (vlf <= celStep[3][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[3][1]), alpha); }
-	else if (vlf <= celStep[4][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[4][1]), alpha); }
-	else { gl_FragColor = vec4( mix( vec3(0.0), basecolor, 1.0), alpha); }
+	if ( vlf <= celStep[0][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[0][2] ), celStep[0][1]), alpha); }
+	else if ( vlf <= celStep[1][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[1][2] ), celStep[1][1]), alpha); }
+	else if ( vlf <= celStep[2][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[2][2] ), celStep[2][1]), alpha); }
+	else if ( vlf <= celStep[3][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[3][2] ), celStep[3][1]), alpha); }
+	else if ( vlf <= celStep[4][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[4][2] ), celStep[4][1]), alpha); }
+	else { gl_FragColor = vec4( mix( basecolor, vec3(1.0), 0.2), alpha); }
 	
 	// End of mod--------------------
 }
