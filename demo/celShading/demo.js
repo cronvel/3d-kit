@@ -116,24 +116,11 @@ function init()
 	floorTexture.anisotropy = 4 ;	// Anisotrope filtering for this texture
 	floorTexture.repeat.set( 4 , 4 ) ;
 	
-	/*
-	var floorMaterial = tdk.Material( {
-		map: floorTexture ,
-		side: three.DoubleSide ,
-		fragmentShader: fs.readFileSync( __dirname + '/../../lib/shaders/cel.fragment.glsl' , 'utf8' ) ,
-		lights:true
-	} ) ;
-	//*/
+	//var floorMaterial = new three.MeshLambertMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
+	var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: three.DoubleSide , lights: true } ) ;
 	
-	//*
-	var floorMaterial = tdk.Material.Cel( {
-		map: floorTexture ,
-		side: three.DoubleSide ,
-		lights: true
-	} ) ;
-	//*/
-	
-	var floorGeometry = new three.PlaneGeometry( 1000 , 1000 , 10 , 10 ) ;
+	var floorGeometry = new three.PlaneGeometry( 1000 , 1000 ) ;
+	//var floorGeometry = new three.PlaneGeometry( 1000 , 1000 , 2 , 2 ) ;
 	var floor = new three.Mesh( floorGeometry , floorMaterial ) ;
 	floor.position.z = -60 ;
 	scene.add( floor ) ;
@@ -167,7 +154,8 @@ function init()
 	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
 	brickTexture.anisotropy = 16 ;
 	
-	var cubeMaterial = new three.MeshLambertMaterial( { map: brickTexture } ) ;
+	//var cubeMaterial = new three.MeshLambertMaterial( { map: brickTexture } ) ;
+	var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
 	var cubeGeometry = new three.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new three.Mesh( cubeGeometry , cubeMaterial ) ;

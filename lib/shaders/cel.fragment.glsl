@@ -5,6 +5,10 @@ uniform vec3 emissive;
 uniform float opacity;
 uniform vec2 celStep[5];
 
+// cel.vertex.glsl transmit that to us:
+varying vec3 celPosition;
+varying vec3 celNormal;
+
 varying vec3 vLightFront;
 
 #ifdef DOUBLE_SIDED
@@ -80,6 +84,72 @@ void main() {
 	
 	// Start of mod--------------------
 	
+	// This whole part is taken from lights_lambert_vertex.glsl, now light is computed on the fragment to gain precisions
+	
+	GeometricContext geometry;
+	geometry.position = celPosition;
+	geometry.normal = celNormal;
+	
+	GeometricContext backGeometry;
+	backGeometry.position = geometry.position;
+	backGeometry.normal = -geometry.normal;
+	
+	IncidentLight directLight;
+	float dotNL;
+	vec3 directLightColor_Diffuse;
+	
+	vec3 vLightFront_cel = vec3( 0.0 ) ;
+	vec3 vLightBack_cel = vec3( 0.0 ) ;
+	
+	#if NUM_POINT_LIGHTS > 0
+		for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
+			directLight = getPointDirectLightIrradiance( pointLights[ i ], geometry );
+			dotNL = dot( geometry.normal, directLight.direction );
+			directLightColor_Diffuse = PI * directLight.color;
+			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
+			#ifdef DOUBLE_SIDED
+				vLightBack_cel += saturate( -dotNL ) * directLightColor_Diffuse;
+			#endif
+		}
+	#endif
+	
+	#if NUM_SPOT_LIGHTS > 0
+		for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {
+			directLight = getSpotDirectLightIrradiance( spotLights[ i ], geometry );
+			dotNL = dot( geometry.normal, directLight.direction );
+			directLightColor_Diffuse = PI * directLight.color;
+			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
+			#ifdef DOUBLE_SIDED
+				vLightBack_cel += saturate( -dotNL ) * directLightColor_Diffuse;
+			#endif
+		}
+	#endif
+
+	#if NUM_DIR_LIGHTS > 0
+		for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {
+			directLight = getDirectionalDirectLightIrradiance( directionalLights[ i ], geometry );
+			dotNL = dot( geometry.normal, directLight.direction );
+			directLightColor_Diffuse = PI * directLight.color;
+			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
+			#ifdef DOUBLE_SIDED
+				vLightBack_cel += saturate( -dotNL ) * directLightColor_Diffuse;
+			#endif
+		}
+	#endif
+
+	#if NUM_HEMI_LIGHTS > 0
+		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {
+			vLightFront_cel += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );
+			#ifdef DOUBLE_SIDED
+				vLightBack_cel += getHemisphereLightIrradiance( hemisphereLights[ i ], backGeometry );
+			#endif
+		}
+	#endif
+
+	// End of lights_lambert_vertex.glsl code
+	
+	// Cel-shading specific code
+	
 	#ifdef USE_MAP
 		gl_FragColor = texture2D( map, vUv );
 	#else
@@ -88,19 +158,16 @@ void main() {
 	
 	vec3 basecolor = vec3(gl_FragColor[0], gl_FragColor[1], gl_FragColor[2]);
 	float alpha = gl_FragColor[3];
-	float vlf = vLightFront[0];
+	//float vlf = vLightFront[0];
+	float vlf = ( vLightFront_cel[0] + vLightFront_cel[1] + vLightFront_cel[2] ) * 0.33333333333;
 	
 	// Clean and simple
-	//if (vlf >= 0.75) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.0), alpha); }
-	//else if (vlf >= 0.50) { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.3), alpha); }
-	//else { gl_FragColor = vec4(mix( basecolor, vec3(0.0), 0.5), alpha); }
-	
-	// Clean and simple
-	//if (vlf <= 0.5 ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, 0.5) , alpha); }
 	if (vlf <= celStep[0][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[0][1]), alpha); }
 	else if (vlf <= celStep[1][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[1][1]), alpha); }
 	else if (vlf <= celStep[2][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[2][1]), alpha); }
 	else if (vlf <= celStep[3][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[3][1]), alpha); }
 	else if (vlf <= celStep[4][0] ) { gl_FragColor = vec4(mix( vec3(0.0), basecolor, celStep[4][1]), alpha); }
 	else { gl_FragColor = vec4( mix( vec3(0.0), basecolor, 1.0), alpha); }
+	
+	// End of mod--------------------
 }
