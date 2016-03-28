@@ -151,7 +151,7 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	//*
+	/*
 	var loader = new three.JSONLoader() ;
 	var r = loader.parse( require( './test.json' ) ) ;
 	var r = loader.parse( fs.readFileSync( __dirname + '/test.json' , 'utf8' ) , './' ) ;
@@ -160,7 +160,7 @@ function init()
 	//scene.add( r ) ;
 	//*/
 	
-	/*
+	//*
 	var loader = new three.ObjectLoader() ;
 	var r = loader.parse( require( './test.json' ) ) ;
 	r.position.set( 300 , 0 , 0 ) ;
