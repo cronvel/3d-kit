@@ -153,22 +153,50 @@ function init()
 	
 	/*
 	var loader = new three.JSONLoader() ;
-	var r = loader.parse( require( './test.json' ) ) ;
-	var r = loader.parse( fs.readFileSync( __dirname + '/test.json' , 'utf8' ) , './' ) ;
-	var modelGeometry = r.modelGeometry ;
-	var modelMaterial = r.modelGeometry ;
-	//scene.add( r ) ;
+	var parsed = loader.parse( require( './blender.json' ) ) ;
+	console.log( parsed ) ;
+	//var modelTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
+	//var modelMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
+	//var model = new three.Mesh( modelGeometry , modelMaterial ) ;
+	var model = new three.Mesh( parsed.geometry ) ;
+	model.scale.set( 20 , 20 , 20 ) ;
+	scene.add( model ) ;
 	//*/
 	
 	//*
+	var loader = new three.JSONLoader() ;
+	//console.log( require( './car.json' ) ) ;
+	var parsed = loader.parse( require( './car.json' ) ) ;
+	console.log( parsed ) ;
+	var modelGeometry = parsed.geometry ;
+	var modelTexture = new three.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
+	modelTexture.anisotropy = 16 ;
+	var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
+	//var modelMaterial = tdk.Material.Cel( { map: modelTexture , lights: true } ) ;
+	var model = new three.Mesh( modelGeometry , modelMaterial ) ;
+	//var model = new three.MeshFaceMaterial( modelGeometry , modelMaterial ) ;
+	model.rotation.x = tdk.DEGREE_90 ;
+	model.scale.set( 20 , 20 , 20 ) ;
+	scene.add( model ) ;
+	//*/
+	
+	/*
+	var loader = new three.ColladaLoader() ;
+	loader.options.convertUpAxis = true ;
+	var parsed = loader.parse( require( './car.dae' ) ) ;
+	parsed.scene.updateMatrix() ;
+	//*/
+	
+	/*
 	var loader = new three.ObjectLoader() ;
-	var r = loader.parse( require( './test.json' ) ) ;
-	r.position.set( 300 , 0 , 0 ) ;
-	r.scale.set( 100 , 100 , 100 ) ;
+	var r = loader.parse( require( './car.json' ) ) ;
+	r.position.set( 80 , 0 , -40 ) ;
+	r.rotation.x = tdk.DEGREE_90 ;
+	r.scale.set( 20 , 20 , 20 ) ;
 	scene.add( r ) ;
 	//*/
 	
-	
+	//*
 	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
 	brickTexture.anisotropy = 16 ;
 	
@@ -177,8 +205,9 @@ function init()
 	var cubeGeometry = new three.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new three.Mesh( cubeGeometry , cubeMaterial ) ;
-	cube.position.set( 0 , 0 , 0 ) ;
+	cube.position.set( 1000 , 0 , 0 ) ;
 	scene.add( cube ) ;
+	//*/
 	
 	// create a small sphere to show position of light
 	lightSphere = new three.Mesh( 
