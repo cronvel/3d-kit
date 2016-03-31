@@ -180,7 +180,7 @@ function init()
 	scene.add( model ) ;
 	//*/
 	
-	/*
+	/* https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_json_blender.html
 	var loader = new three.ColladaLoader() ;
 	loader.options.convertUpAxis = true ;
 	var parsed = loader.parse( require( './car.dae' ) ) ;

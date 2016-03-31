@@ -1,6 +1,6 @@
 {
   "name": "3d-kit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A small 3D kit using Three.js.",
   "main": "lib/tdk.js",
   "directories": {
