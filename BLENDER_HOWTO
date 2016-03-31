@@ -1,0 +1,50 @@
+
+For Three.js r75, tested with Blender 2.75
+==========================================
+
+
+
+Preliminaries: install the Three.js exporter add-on
+---------------------------------------------------
+
+* Get the Three.js exporter for blender, located in the repository at: utils/exporters/blender/addons/io_three
+* Zip the whole directory: zip -r io_three.zip io_three
+* Open Blender, go to File > User Preferences, click the Add-ons tab, then "install from file", browse and select the io_three.zip
+
+
+
+Blender part
+------------
+
+* Create a basic mesh, select all faces
+* Go to the texture panel (right panel), click the texture for material, choose the "image or movie" type, open your texture
+* Below, set the coordinates' type to UV, flat projection
+* In the top panel, choose the "UV editing" view
+* At the bottom of the left part, choose the appropriate texture image
+* All faces should be selected (Edit mode), move the cursor in the right part of the view and press the 'U' key to open the UV menu
+* Choose "Unwrap" in the menu
+* If you get the "Non-Uniform Scaling during UV unwrap" warning, you need to apply the scale:
+	* Switch to Object mode
+	* Press Ctrl-A to open the "apply" menu, and choose "scale"
+	* Retry the "Unwrap" operation
+* The UV coordinates should be OK now
+* Return back to the main "Default" view (top panel)
+* Export the file: File > Export > Three.js (.json)
+
+
+
+Three.js part
+-------------
+
+Your material and texture would be lost, but your UV map should be OK.
+
+```
+var loader = new three.JSONLoader() ;
+var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
+var modelGeometry = parsed.geometry ;
+var modelTexture = new three.TextureLoader().load( 'path/to/my/texture.jpg' ) ;
+var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
+var model = new three.Mesh( modelGeometry , modelMaterial ) ;
+scene.add( model ) ;
+```
+
