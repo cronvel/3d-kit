@@ -151,18 +151,6 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	/*
-	var loader = new three.JSONLoader() ;
-	var parsed = loader.parse( require( './blender.json' ) ) ;
-	console.log( parsed ) ;
-	//var modelTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
-	//var modelMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
-	//var model = new three.Mesh( modelGeometry , modelMaterial ) ;
-	var model = new three.Mesh( parsed.geometry ) ;
-	model.scale.set( 20 , 20 , 20 ) ;
-	scene.add( model ) ;
-	//*/
-	
 	//*
 	var loader = new three.JSONLoader() ;
 	//console.log( require( './car.json' ) ) ;
@@ -182,21 +170,12 @@ function init()
 	scene.add( model ) ;
 	//*/
 	
-	/* https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_json_blender.html
-	var loader = new three.ColladaLoader() ;
-	loader.options.convertUpAxis = true ;
-	var parsed = loader.parse( require( './car.dae' ) ) ;
-	parsed.scene.updateMatrix() ;
+	/*
+	//var edges = new three.FaceNormalsHelper( model, 2, 0x00ff00, 1 );
+	var edges = new THREE.VertexNormalsHelper( model, 2, 0x00ff00, 1 );
+	scene.add( edges ) ;
 	//*/
 	
-	/*
-	var loader = new three.ObjectLoader() ;
-	var r = loader.parse( require( './car.json' ) ) ;
-	r.position.set( 80 , 0 , -40 ) ;
-	r.rotation.x = tdk.DEGREE_90 ;
-	r.scale.set( 20 , 20 , 20 ) ;
-	scene.add( r ) ;
-	//*/
 	
 	//*
 	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;

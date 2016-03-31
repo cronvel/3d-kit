@@ -18,17 +18,24 @@ Blender part
 
 * Create a basic mesh, select all faces
 * Go to the texture panel (right panel), click the texture for material, choose the "image or movie" type, open your texture
-* Below, set the coordinates' type to UV, flat projection
-* In the top panel, choose the "UV editing" view
-* At the bottom of the left part, choose the appropriate texture image
-* All faces should be selected (Edit mode), move the cursor in the right part of the view and press the 'U' key to open the UV menu
-* Choose "Unwrap" in the menu
-* If you get the "Non-Uniform Scaling during UV unwrap" warning, you need to apply the scale:
-	* Switch to Object mode
-	* Press Ctrl-A to open the "apply" menu, and choose "scale"
-	* Retry the "Unwrap" operation
-* The UV coordinates should be OK now
-* Return back to the main "Default" view (top panel)
+* The model must have UV-mapping, if it doesn't, then:
+	* Below, set the coordinates' type to UV, flat projection
+	* In the top panel, choose the "UV editing" view
+	* At the bottom of the left part, choose the appropriate texture image
+	* All faces should be selected (Edit mode), move the cursor in the right part of the view and press the 'U' key to open the UV menu
+	* Choose "Unwrap" in the menu
+	* If you get the "Non-Uniform Scaling during UV unwrap" warning, you need to apply the scale:
+		* Switch to Object mode
+		* Press Ctrl-A to open the "apply" menu, and choose "scale"
+		* Retry the "Unwrap" operation
+	* Now the UV coordinates should be OK
+	* Return back to the main "Default" view (top panel)
+* If you have trouble with normals, i.e. smooth edge where sharp one are expected, that's because faces are sharing the same
+  vertices normals, to fix it:
+	* in the left panel open the "modifier" tab
+	* click "add modifier" and choose "edge split"
+	* adjust the angle
+	* apply it: now your vertices normals should be OK
 * Export the file: File > Export > Three.js (.json)
 
 
@@ -57,4 +64,14 @@ var model = new THREE.Mesh( modelGeometry , modelMaterial ) ;
 
 scene.add( model ) ;
 ```
+
+
+
+To debug normals:
+
+```
+var edges = new THREE.VertexNormalsHelper( model, 2, 0x00ff00, 1 ) ;
+scene.add( edges ) ;
+```
+
 
