@@ -36,15 +36,25 @@ Blender part
 Three.js part
 -------------
 
-Your material and texture would be lost, but your UV map should be OK.
+Your materials and textures would be lost, but your texture UV-mapping is OK.
 
 ```
-var loader = new three.JSONLoader() ;
+// Load the Geometry
+var loader = new THREE.JSONLoader() ;
 var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
 var modelGeometry = parsed.geometry ;
-var modelTexture = new three.TextureLoader().load( 'path/to/my/texture.jpg' ) ;
-var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
-var model = new three.Mesh( modelGeometry , modelMaterial ) ;
+
+// Manually load your texture
+var modelTexture = new THREE.TextureLoader().load( 'path/to/my/texture.jpg' ) ;
+
+// Really important: by default the texture is set to THREE.ClampToEdgeWrapping, which fucked up your UV-mapping
+modelTexture.wrapS = THREE.RepeatWrapping ;
+modelTexture.wrapT = THREE.RepeatWrapping ;
+
+var modelMaterial = new THREE.MeshLambertMaterial( { map: modelTexture } ) ;
+
+var model = new THREE.Mesh( modelGeometry , modelMaterial ) ;
+
 scene.add( model ) ;
 ```
 

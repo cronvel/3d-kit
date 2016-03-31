@@ -171,8 +171,10 @@ function init()
 	var modelGeometry = parsed.geometry ;
 	var modelTexture = new three.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
 	modelTexture.anisotropy = 16 ;
-	var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
-	//var modelMaterial = tdk.Material.Cel( { map: modelTexture , lights: true } ) ;
+	modelTexture.wrapS = three.RepeatWrapping ;
+	modelTexture.wrapT = three.RepeatWrapping ;
+	//var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
+	var modelMaterial = tdk.Material.Cel( { map: modelTexture , lights: true } ) ;
 	var model = new three.Mesh( modelGeometry , modelMaterial ) ;
 	//var model = new three.MeshFaceMaterial( modelGeometry , modelMaterial ) ;
 	model.rotation.x = tdk.DEGREE_90 ;
