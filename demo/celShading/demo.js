@@ -28,7 +28,6 @@
 
 
 
-var three = require( 'three' ) ;
 var tdk = require( '../../lib/tdk.js' ) ;
 
 var fs = require( 'fs' ) ;
@@ -38,7 +37,7 @@ var fs = require( 'fs' ) ;
 // standard global variables
 var scene , camera , engine , controls = null ;
 var keyboard = tdk.Keyboard() ;
-var clock = new three.Clock() ;
+var clock = new THREE.Clock() ;
 // custom global variables
 var cube ;
 var pointLight , pointLightAngle = 0 , lightSphere ;
@@ -54,7 +53,7 @@ animate() ;
 function init() 
 {
 	// Scene
-	scene = new three.Scene() ;
+	scene = new THREE.Scene() ;
 	
 	// Engine
 	engine = new tdk.Engine() ;
@@ -68,12 +67,12 @@ function init()
 	
 				/* CAMERA */
 	
-	camera = new three.PerspectiveCamera( 45 , 1 , 0.1 , 20000 ) ;
+	camera = new THREE.PerspectiveCamera( 45 , 1 , 0.1 , 20000 ) ;
 	scene.add( camera ) ;
 	camera.position.set( 10 , -200 , 50 ) ;
 	
 	//*
-	camera.up = new three.Vector3( 0 , 0 , 1 ) ;
+	camera.up = new THREE.Vector3( 0 , 0 , 1 ) ;
 	camera.lookAt( scene.position ) ;
 	//*/
 	
@@ -86,42 +85,42 @@ function init()
 	//*/
 	
 	// Controls
-	controls = new three.TrackballControls( camera ) ;
+	controls = new THREE.TrackballControls( camera ) ;
 	
 	
 	
 				/* LIGHT */
 	
 	// Ambient light
-	var ambientLight = new three.AmbientLight( 0x555555 ) ;
+	var ambientLight = new THREE.AmbientLight( 0x555555 ) ;
 	scene.add( ambientLight ) ;
 	
 	// Point light
-	pointLight = new three.PointLight( 0xffffff ) ;
+	pointLight = new THREE.PointLight( 0xffffff ) ;
 	scene.add( pointLight ) ;
 	
 	
 	
 				/* AXIS HELPER */
 	
-	var axes = new three.AxisHelper( 200 ) ;
+	var axes = new THREE.AxisHelper( 200 ) ;
 	scene.add( axes ) ;
 	
 	
 	
 				/* FLOOR */
 	
-	var floorTexture = new three.TextureLoader().load( '../tex/dirt-ground.jpg' ) ;
-	floorTexture.wrapS = floorTexture.wrapT = three.RepeatWrapping ; 
+	var floorTexture = new THREE.TextureLoader().load( '../tex/dirt-ground.jpg' ) ;
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping ; 
 	floorTexture.anisotropy = 4 ;	// Anisotrope filtering for this texture
 	floorTexture.repeat.set( 4 , 4 ) ;
 	
-	//var floorMaterial = new three.MeshLambertMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
-	var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: three.DoubleSide , lights: true } ) ;
+	//var floorMaterial = new THREE.MeshLambertMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
+	var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	
-	var floorGeometry = new three.PlaneGeometry( 1000 , 1000 ) ;
-	//var floorGeometry = new three.PlaneGeometry( 1000 , 1000 , 2 , 2 ) ;
-	var floor = new three.Mesh( floorGeometry , floorMaterial ) ;
+	var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 ) ;
+	//var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 , 2 , 2 ) ;
+	var floor = new THREE.Mesh( floorGeometry , floorMaterial ) ;
 	floor.position.z = -60 ;
 	scene.add( floor ) ;
 	
@@ -136,7 +135,7 @@ function init()
 	
 				/* FOG */
 	
-	//scene.fog = new three.FogExp2( 0x9999ff , 0.00025 ) ;
+	//scene.fog = new THREE.FogExp2( 0x9999ff , 0.00025 ) ;
 	
 	
 	
@@ -152,57 +151,57 @@ function init()
 	////////////
 	
 	//*
-	var loader = new three.JSONLoader() ;
+	var loader = new THREE.JSONLoader() ;
 	//console.log( require( './car.json' ) ) ;
 	var parsed = loader.parse( require( './car.json' ) ) ;
 	console.log( parsed ) ;
 	var modelGeometry = parsed.geometry ;
-	var modelTexture = new three.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
+	var modelTexture = new THREE.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
 	modelTexture.anisotropy = 16 ;
-	modelTexture.wrapS = three.RepeatWrapping ;
-	modelTexture.wrapT = three.RepeatWrapping ;
-	//var modelMaterial = new three.MeshLambertMaterial( { map: modelTexture } ) ;
-	var modelMaterial = tdk.Material.Cel( { map: modelTexture , lights: true } ) ;
-	var model = new three.Mesh( modelGeometry , modelMaterial ) ;
-	//var model = new three.MeshFaceMaterial( modelGeometry , modelMaterial ) ;
+	modelTexture.wrapS = THREE.RepeatWrapping ;
+	modelTexture.wrapT = THREE.RepeatWrapping ;
+	//var modelMaterial = new THREE.MeshLambertMaterial( { map: modelTexture } ) ;
+	var modelMaterial = tdk.Material.Cel2( { map: modelTexture , lights: true } ) ;
+	var model = new THREE.Mesh( modelGeometry , modelMaterial ) ;
+	//var model = new THREE.MeshFaceMaterial( modelGeometry , modelMaterial ) ;
 	model.rotation.x = tdk.DEGREE_90 ;
 	model.scale.set( 20 , 20 , 20 ) ;
 	scene.add( model ) ;
 	//*/
 	
 	/*
-	//var edges = new three.FaceNormalsHelper( model, 2, 0x00ff00, 1 );
+	//var edges = new THREE.FaceNormalsHelper( model, 2, 0x00ff00, 1 );
 	var edges = new THREE.VertexNormalsHelper( model, 2, 0x00ff00, 1 );
 	scene.add( edges ) ;
 	//*/
 	
 	
 	//*
-	var brickTexture = new three.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
+	var brickTexture = new THREE.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
 	brickTexture.anisotropy = 16 ;
 	
-	//var cubeMaterial = new three.MeshLambertMaterial( { map: brickTexture } ) ;
+	//var cubeMaterial = new THREE.MeshLambertMaterial( { map: brickTexture } ) ;
 	var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
-	var cubeGeometry = new three.CubeGeometry( 50 , 50 , 50 ) ;
+	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
 	
-	cube = new three.Mesh( cubeGeometry , cubeMaterial ) ;
+	cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
 	cube.position.set( 1000 , 0 , 0 ) ;
 	scene.add( cube ) ;
 	//*/
 	
 	// create a small sphere to show position of light
-	lightSphere = new three.Mesh( 
-		new three.SphereGeometry( 10 , 16 , 8 ) ,
-		new three.MeshBasicMaterial( { color: 0xffaa00 } )
+	lightSphere = new THREE.Mesh( 
+		new THREE.SphereGeometry( 10 , 16 , 8 ) ,
+		new THREE.MeshBasicMaterial( { color: 0xffaa00 } )
 	) ;
 	
 	scene.add( lightSphere ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
 	// Sprite
-	var spriteTexture = new three.TextureLoader().load( '../tex/redball.png' );
-	var spriteMaterial = new three.SpriteMaterial( { map: spriteTexture } ) ;
-	var sprite = new three.Sprite( spriteMaterial ) ;
+	var spriteTexture = new THREE.TextureLoader().load( '../tex/redball.png' );
+	var spriteMaterial = new THREE.SpriteMaterial( { map: spriteTexture } ) ;
+	var sprite = new THREE.Sprite( spriteMaterial ) ;
 	sprite.position.set( -500 , 50 , 0 ) ;
 	sprite.scale.set( 50 , 50 , 1.0 ) ;
 	scene.add( sprite ) ;

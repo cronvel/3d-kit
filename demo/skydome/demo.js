@@ -28,7 +28,6 @@
 
 
 
-var three = require( 'three' ) ;
 var tdk = require( '../../lib/tdk.js' ) ;
 
 
@@ -36,7 +35,7 @@ var tdk = require( '../../lib/tdk.js' ) ;
 // standard global variables
 var scene , camera , engine , controls = null ;
 var keyboard = new tdk.Keyboard() ;
-var clock = new three.Clock() ;
+var clock = new THREE.Clock() ;
 // custom global variables
 var cube ;
 var pointLight , pointLightAngle = 0 , lightSphere ;
@@ -51,7 +50,7 @@ animate() ;
 function init() 
 {
 	// Scene
-	scene = new three.Scene() ;
+	scene = new THREE.Scene() ;
 	
 	// Engine
 	engine = new tdk.Engine() ;
@@ -59,18 +58,18 @@ function init()
 	engine.showFps() ;
 	
 	// Misc
-	//threex.FullScreen.bindKey( { charCode : 'm'.charCodeAt(0) } ) ;
+	//THREEx.FullScreen.bindKey( { charCode : 'm'.charCodeAt(0) } ) ;
 	
 	
 	
 				/* CAMERA */
 	
-	camera = new three.PerspectiveCamera( 45 , 1 , 0.1 , 20000 ) ;
+	camera = new THREE.PerspectiveCamera( 45 , 1 , 0.1 , 20000 ) ;
 	scene.add( camera ) ;
 	camera.position.set( 10 , -200 , 50 ) ;
 	
 	//*
-	camera.up = new three.Vector3( 0 , 0 , 1 ) ;
+	camera.up = new THREE.Vector3( 0 , 0 , 1 ) ;
 	camera.lookAt( scene.position ) ;
 	//*/
 	
@@ -83,37 +82,37 @@ function init()
 	//*/
 	
 	// Controls
-	controls = new three.TrackballControls( camera ) ;
+	controls = new THREE.TrackballControls( camera ) ;
 	
 	
 	
 				/* LIGHT */
 	
 	// Ambient light
-	var ambientLight = new three.AmbientLight( 0x333333 ) ;
+	var ambientLight = new THREE.AmbientLight( 0x333333 ) ;
 	scene.add( ambientLight ) ;
 	
 	// Point light
-	pointLight = new three.PointLight( 0xffffff ) ;
+	pointLight = new THREE.PointLight( 0xffffff ) ;
 	scene.add( pointLight ) ;
 	
 	
 	
 				/* AXIS HELPER */
 	
-	var axes = new three.AxisHelper( 200 ) ;
+	var axes = new THREE.AxisHelper( 200 ) ;
 	scene.add( axes ) ;
 	
 	
 	
 				/* FLOOR */
 	
-	var floorTexture = new three.TextureLoader().load( '../tex/checkerboard.jpg' ) ;
-	floorTexture.wrapS = floorTexture.wrapT = three.RepeatWrapping ; 
+	var floorTexture = new THREE.TextureLoader().load( '../tex/checkerboard.jpg' ) ;
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping ; 
 	floorTexture.repeat.set( 10 , 10 ) ;
-	var floorMaterial = new three.MeshBasicMaterial( { map: floorTexture , side: three.DoubleSide } ) ;
-	var floorGeometry = new three.PlaneGeometry( 200 , 200 , 10 , 10 ) ;
-	var floor = new three.Mesh( floorGeometry , floorMaterial ) ;
+	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
+	var floorGeometry = new THREE.PlaneGeometry( 200 , 200 , 10 , 10 ) ;
+	var floor = new THREE.Mesh( floorGeometry , floorMaterial ) ;
 	floor.position.z = -60 ;
 	scene.add( floor ) ;
 	
@@ -129,7 +128,7 @@ function init()
 	
 				/* FOG */
 	
-	//scene.fog = new three.FogExp2( 0x9999ff , 0.00025 ) ;
+	//scene.fog = new THREE.FogExp2( 0x9999ff , 0.00025 ) ;
 	
 	
 	
@@ -144,23 +143,23 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	var crateTexture = new three.TextureLoader().load( '../tex/crate.png' ) ;
-	var crateNormal = new three.TextureLoader().load( '../tex/crate.normal.png' ) ;
+	var crateTexture = new THREE.TextureLoader().load( '../tex/crate.png' ) ;
+	var crateNormal = new THREE.TextureLoader().load( '../tex/crate.normal.png' ) ;
 	
-	var cubeMaterial = new three.MeshLambertMaterial( { map: crateTexture } ) ;
-	var cubeMaterialBump = new three.MeshPhongMaterial( { map: crateTexture, bumpMap: crateNormal } ) ;
+	var cubeMaterial = new THREE.MeshLambertMaterial( { map: crateTexture } ) ;
+	var cubeMaterialBump = new THREE.MeshPhongMaterial( { map: crateTexture, bumpMap: crateNormal } ) ;
 	
-	var cubeGeometry = new three.CubeGeometry( 50 , 50 , 50 ) ;
+	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
 	
-	//cube = new three.Mesh( cubeGeometry , cubeMaterial ) ;
-	cube = new three.Mesh( cubeGeometry , cubeMaterialBump ) ;
+	//cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
+	cube = new THREE.Mesh( cubeGeometry , cubeMaterialBump ) ;
 	cube.position.set( 0 , 0 , 0 ) ;
 	scene.add( cube ) ;
 	
 	// create a small sphere to show position of light
-	lightSphere = new three.Mesh( 
-		new three.SphereGeometry( 10 , 16 , 8 ) ,
-		new three.MeshBasicMaterial( { color: 0xffaa00 } )
+	lightSphere = new THREE.Mesh( 
+		new THREE.SphereGeometry( 10 , 16 , 8 ) ,
+		new THREE.MeshBasicMaterial( { color: 0xffaa00 } )
 	) ;
 	
 	scene.add( lightSphere ) ;
