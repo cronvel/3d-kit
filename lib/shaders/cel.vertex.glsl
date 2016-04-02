@@ -1,16 +1,13 @@
 #define LAMBERT
 
+varying vec3 vViewPosition;
+varying vec3 vNormal;
+
+
+// /!\ Should be removed, but there is still some part using that somewhere
 varying vec3 vLightFront;
-
-varying vec3 celPosition;
-varying vec3 celNormal;
-
-
-
 #ifdef DOUBLE_SIDED
-
 	varying vec3 vLightBack;
-
 #endif
 
 #include <common>
@@ -50,8 +47,8 @@ void main() {
 	//#include <lights_lambert_vertex>
 	
 	// Pass position to the fragment shader: it should compute the light by itself
-	celPosition = mvPosition.xyz;
-	celNormal = normalize( transformedNormal );
+	vNormal = normalize( transformedNormal );
+	vViewPosition = mvPosition.xyz;
 	// End of mod
 	
 	#include <shadowmap_vertex>

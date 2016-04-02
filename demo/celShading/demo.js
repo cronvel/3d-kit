@@ -41,7 +41,9 @@ var clock = new THREE.Clock() ;
 // custom global variables
 var cube ;
 var pointLight , pointLightAngle = 0 , lightSphere ;
+var pointLight2 , pointLight2Angle = 0 , lightSphere2 ;
 
+var enableLight2 = true ;
 
 
 
@@ -101,6 +103,15 @@ function init()
 	pointLight.decay = 2 ;
 	scene.add( pointLight ) ;
 	
+	// Point light2
+	if ( enableLight2 )
+	{
+		pointLight2 = new THREE.PointLight( 0x00ff00 ) ;
+		pointLight2.intensity = 0.3 ;
+		pointLight2.distance = 1000 ;
+		pointLight2.decay = 2 ;
+		scene.add( pointLight2 ) ;
+	}
 	
 	
 				/* AXIS HELPER */
@@ -120,7 +131,7 @@ function init()
 	//var floorMaterial = new THREE.MeshLambertMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
 	//var floorMaterial = tdk.Material.LambertPlusPlus( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	//var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
-	var floorMaterial = tdk.Material.Cel2( {
+	var floorMaterial = tdk.Material.Cel( {
 		map: floorTexture ,
 		side: THREE.DoubleSide ,
 		lights: true ,
@@ -173,7 +184,15 @@ function init()
 	modelTexture.wrapS = THREE.RepeatWrapping ;
 	modelTexture.wrapT = THREE.RepeatWrapping ;
 	//var modelMaterial = new THREE.MeshLambertMaterial( { map: modelTexture } ) ;
-	var modelMaterial = tdk.Material.Cel2( { map: modelTexture , lights: true } ) ;
+	var modelMaterial = tdk.Material.Cel( {
+		map: modelTexture ,
+		lights: true ,
+		specular: {
+			intensity: 2,
+			angle: 20
+		}
+	} ) ;
+	
 	var model = new THREE.Mesh( modelGeometry , modelMaterial ) ;
 	//var model = new THREE.MeshFaceMaterial( modelGeometry , modelMaterial ) ;
 	model.rotation.x = tdk.DEGREE_90 ;
@@ -194,11 +213,11 @@ function init()
 	
 	//var cubeMaterial = new THREE.MeshLambertMaterial( { map: brickTexture } ) ;
 	//var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
-	var cubeMaterial = tdk.Material.Cel2( { map: brickTexture , lights: true } ) ;
+	var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
 	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
-	cube.position.set( 1000 , 0 , 0 ) ;
+	cube.position.set( 500 , 0 , 0 ) ;
 	scene.add( cube ) ;
 	//*/
 	
@@ -210,6 +229,19 @@ function init()
 	
 	scene.add( lightSphere ) ;
 	lightSphere.position.copy( pointLight.position ) ;
+	
+	if ( enableLight2 )
+	{
+		// create a small sphere to show position of light
+		lightSphere2 = new THREE.Mesh( 
+			new THREE.SphereGeometry( 10 , 16 , 8 ) ,
+			new THREE.MeshBasicMaterial( { color: 0x55ff55 } )
+		) ;
+		
+		scene.add( lightSphere2 ) ;
+		lightSphere2.position.copy( pointLight2.position ) ;
+	}
+	
 	
 	// Sprite
 	var spriteTexture = new THREE.TextureLoader().load( '../tex/redball.png' );
@@ -258,6 +290,12 @@ function update()
 	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 300 * ( 1 + Math.sin( pointLightAngle * 4 ) ) ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
+	if ( enableLight2 )
+	{
+		pointLight2Angle -= 0.001 ;
+		pointLight2.position.set( 200 * Math.cos( pointLight2Angle ) , 200 * Math.sin( pointLight2Angle ) , 200 * ( 1 + Math.sin( pointLight2Angle * 2 ) ) ) ;
+		lightSphere2.position.copy( pointLight2.position ) ;
+	}
 }
 
 

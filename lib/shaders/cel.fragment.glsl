@@ -6,20 +6,18 @@ uniform vec3 diffuse;
 uniform vec3 emissive;
 uniform float opacity;
 
-// The material has at most 5 shades
-uniform vec3 celStep[5];
-
 // cel.vertex.glsl transmit that to us:
-varying vec3 celPosition;
-varying vec3 celNormal;
+varying vec3 vViewPosition;
+varying vec3 vNormal;
 
+
+// /!\ Should be removed, but it is still used somewhere
 varying vec3 vLightFront;
-
 #ifdef DOUBLE_SIDED
-
 	varying vec3 vLightBack;
-
 #endif
+
+
 
 #include <common>
 #include <color_pars_fragment>
@@ -90,9 +88,10 @@ void main() {
 	
 	// This whole part is taken from lights_lambert_vertex.glsl, now light is computed on the fragment to gain precisions
 	
+	
 	GeometricContext geometry;
-	geometry.position = celPosition;
-	geometry.normal = celNormal;
+	geometry.position = vViewPosition;
+	geometry.normal = normalize( vNormal );
 	
 	GeometricContext backGeometry;
 	backGeometry.position = geometry.position;
@@ -102,17 +101,46 @@ void main() {
 	float dotNL;
 	vec3 directLightColor_Diffuse;
 	
+	vec3 R;
+	vec3 E;
+	float dotRE;
+	
 	vec3 vLightFront_cel = vec3( 0.0 ) ;
 	vec3 vLightBack_cel = vec3( 0.0 ) ;
+	
+	vLightFront_cel += getAmbientLightIrradiance( ambientLightColor ) * RECIPROCAL_PI ;
 	
 	#if NUM_POINT_LIGHTS > 0
 		for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
 			directLight = getPointDirectLightIrradiance( pointLights[ i ], geometry );
 			dotNL = dot( geometry.normal, directLight.direction );
+			
+			//*
+			if ( dotNL >= DIFFUSE_HIGH_THRESHOLD ) { dotNL = DIFFUSE_HIGH_INTENSITY ; }
+			else if ( dotNL >= DIFFUSE_LOW_THRESHOLD ) { dotNL = DIFFUSE_MIDDLE_INTENSITY ; }
+			else if ( dotNL >= 0.0 ) { dotNL = DIFFUSE_LOW_INTENSITY ; }
+			else { dotNL = 0.0 ; }
+			//*/
+			
 			directLightColor_Diffuse = PI * directLight.color;
-			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
+			vLightFront_cel += dotNL * directLightColor_Diffuse;
+			
 			#ifdef DOUBLE_SIDED
-				vLightBack_cel += saturate( -dotNL ) * directLightColor_Diffuse;
+				vLightBack_cel += - dotNL * directLightColor_Diffuse;
+			#endif
+			
+			#ifdef SPECULAR_INTENSITY
+				E = normalize( - vViewPosition ) ;
+				R = normalize( - reflect( directLight.direction , geometry.normal ) );
+				
+				dotRE = dot( R,E );
+				
+				//*
+				if ( dotRE >= SPECULAR_THRESHOLD ) { dotRE = SPECULAR_INTENSITY ; }	// 0.9^10
+				else { dotRE = 0.0 ; }
+				//*/
+				
+				vLightFront_cel += dotRE * directLightColor_Diffuse ;
 			#endif
 		}
 	#endif
@@ -160,18 +188,9 @@ void main() {
 		gl_FragColor = vec4(diffuse, 1.0);
 	#endif
 	
-	vec3 basecolor = vec3(gl_FragColor[0], gl_FragColor[1], gl_FragColor[2]);
-	float alpha = gl_FragColor[3];
-	//float vlf = vLightFront[0];
-	float vlf = ( vLightFront_cel[0] + vLightFront_cel[1] + vLightFront_cel[2] ) * 0.33333333333;
-	
-	// Clean and simple
-	if ( vlf <= celStep[0][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[0][2] ), celStep[0][1]), alpha); }
-	else if ( vlf <= celStep[1][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[1][2] ), celStep[1][1]), alpha); }
-	else if ( vlf <= celStep[2][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[2][2] ), celStep[2][1]), alpha); }
-	else if ( vlf <= celStep[3][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[3][2] ), celStep[3][1]), alpha); }
-	else if ( vlf <= celStep[4][0] ) { gl_FragColor = vec4(mix( basecolor, vec3( celStep[4][2] ), celStep[4][1]), alpha); }
-	else { gl_FragColor = vec4( mix( basecolor, vec3(1.0), 0.2), alpha); }
+	gl_FragColor[0] *= vLightFront_cel[0] ;
+	gl_FragColor[1] *= vLightFront_cel[1] ;
+	gl_FragColor[2] *= vLightFront_cel[2] ;
 	
 	// End of mod--------------------
 }
