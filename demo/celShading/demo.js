@@ -97,6 +97,8 @@ function init()
 	
 	// Point light
 	pointLight = new THREE.PointLight( 0xffffff ) ;
+	pointLight.distance = 1000 ;
+	pointLight.decay = 2 ;
 	scene.add( pointLight ) ;
 	
 	
@@ -116,10 +118,11 @@ function init()
 	floorTexture.repeat.set( 4 , 4 ) ;
 	
 	//var floorMaterial = new THREE.MeshLambertMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
-	var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
+	//var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
+	var floorMaterial = tdk.Material.Cel2( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	
 	var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 ) ;
-	//var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 , 2 , 2 ) ;
+	//var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 , 10 , 10 ) ;
 	var floor = new THREE.Mesh( floorGeometry , floorMaterial ) ;
 	floor.position.z = -60 ;
 	scene.add( floor ) ;
@@ -154,7 +157,7 @@ function init()
 	var loader = new THREE.JSONLoader() ;
 	//console.log( require( './car.json' ) ) ;
 	var parsed = loader.parse( require( './car.json' ) ) ;
-	console.log( parsed ) ;
+	//console.log( parsed ) ;
 	var modelGeometry = parsed.geometry ;
 	var modelTexture = new THREE.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
 	modelTexture.anisotropy = 16 ;
@@ -181,7 +184,8 @@ function init()
 	brickTexture.anisotropy = 16 ;
 	
 	//var cubeMaterial = new THREE.MeshLambertMaterial( { map: brickTexture } ) ;
-	var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
+	//var cubeMaterial = tdk.Material.Cel( { map: brickTexture , lights: true } ) ;
+	var cubeMaterial = tdk.Material.Cel2( { map: brickTexture , lights: true } ) ;
 	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
@@ -212,6 +216,9 @@ function init()
 
 function animate() 
 {
+	// Freeze...
+	if ( keyboard.pressed( [ 'p' ] ) ) { requestAnimationFrame( animate ) ; return ; }
+	
 	update() ;
 	render() ;
 	requestAnimationFrame( animate ) ;
@@ -222,17 +229,12 @@ function animate()
 
 function update()
 {
-	if ( keyboard.pressed( [ 'z' ] ) ) 
-	{ 
-		// do something
-	}
-	
 	cube.rotation.x += 0.003 ;
 	cube.rotation.z += 0.001 ;
 	
 	
 	pointLightAngle += 0.002 ;
-	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 200 * Math.sin( pointLightAngle / 100 ) ) ;
+	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 500 * ( 1 + Math.sin( pointLightAngle * 4 ) ) ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
 	if ( controls )  { controls.update() ; }

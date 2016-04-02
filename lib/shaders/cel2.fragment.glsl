@@ -110,11 +110,12 @@ void main() {
 		for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
 			directLight = getPointDirectLightIrradiance( pointLights[ i ], geometry );
 			dotNL = dot( geometry.normal, directLight.direction );
-			
-			if ( dotNL > 0.8 ) { dotNL = 0.8 ; }
-			else if ( dotNL > 0.3 ) { dotNL = 0.3 ; }
+			//*
+			if ( dotNL >= 0.8 ) { dotNL = 0.9 ; }
+			else if ( dotNL >= 0.3 ) { dotNL = 0.5 ; }
+			else if ( dotNL >= 0.0 ) { dotNL = 0.15 ; }
 			else { dotNL = 0.0 ; }
-			
+			//*/
 			directLightColor_Diffuse = PI * directLight.color;
 			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
 			#ifdef DOUBLE_SIDED
