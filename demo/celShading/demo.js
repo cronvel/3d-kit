@@ -120,7 +120,15 @@ function init()
 	//var floorMaterial = new THREE.MeshLambertMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
 	//var floorMaterial = tdk.Material.LambertPlusPlus( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	//var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
-	var floorMaterial = tdk.Material.Cel2( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
+	var floorMaterial = tdk.Material.Cel2( {
+		map: floorTexture ,
+		side: THREE.DoubleSide ,
+		lights: true ,
+		specular: {
+			intensity: 2,
+			angle: 20
+		}
+	} ) ;
 	
 	var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 ) ;
 	//var floorGeometry = new THREE.PlaneGeometry( 1000 , 1000 , 10 , 10 ) ;
@@ -247,7 +255,7 @@ function update()
 	
 	
 	pointLightAngle += 0.002 ;
-	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 500 * ( 1 + Math.sin( pointLightAngle * 4 ) ) ) ;
+	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 300 * ( 1 + Math.sin( pointLightAngle * 4 ) ) ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
 }
