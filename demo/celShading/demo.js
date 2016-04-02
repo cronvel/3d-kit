@@ -118,6 +118,7 @@ function init()
 	floorTexture.repeat.set( 4 , 4 ) ;
 	
 	//var floorMaterial = new THREE.MeshLambertMaterial( { map: floorTexture , side: THREE.DoubleSide } ) ;
+	//var floorMaterial = tdk.Material.LambertPlusPlus( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	//var floorMaterial = tdk.Material.Cel( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	var floorMaterial = tdk.Material.Cel2( { map: floorTexture , side: THREE.DoubleSide , lights: true } ) ;
 	
@@ -216,7 +217,7 @@ function init()
 
 function animate() 
 {
-	// Freeze...
+	// Freeze rendering...
 	if ( keyboard.pressed( [ 'p' ] ) ) { requestAnimationFrame( animate ) ; return ; }
 	
 	update() ;
@@ -229,6 +230,18 @@ function animate()
 
 function update()
 {
+	if ( controls )  { controls.update() ; }
+	
+	if ( camera.orientation )
+	{
+		camera.orientation.direction += 0.01 ;
+		camera.orientation.update() ;
+	}
+	
+	// Freeze object movements...
+	if ( keyboard.pressed( [ 's' ] ) ) { return ; }
+	
+	
 	cube.rotation.x += 0.003 ;
 	cube.rotation.z += 0.001 ;
 	
@@ -237,13 +250,6 @@ function update()
 	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 500 * ( 1 + Math.sin( pointLightAngle * 4 ) ) ) ;
 	lightSphere.position.copy( pointLight.position ) ;
 	
-	if ( controls )  { controls.update() ; }
-	
-	if ( camera.orientation )
-	{
-		camera.orientation.direction += 0.01 ;
-		camera.orientation.update() ;
-	}
 }
 
 

@@ -91,9 +91,12 @@ void main() {
 	
 	// This whole part is taken from lights_lambert_vertex.glsl, now light is computed on the fragment to gain precisions
 	
+	vec3 R;
+	vec3 E;
+	
 	GeometricContext geometry;
 	geometry.position = vViewPosition;
-	geometry.normal = vNormal;
+	geometry.normal = normalize( vNormal );
 	
 	GeometricContext backGeometry;
 	backGeometry.position = geometry.position;
@@ -101,26 +104,45 @@ void main() {
 	
 	IncidentLight directLight;
 	float dotNL;
+	float dotRE;
 	vec3 directLightColor_Diffuse;
 	
 	vec3 vLightFront_cel = vec3( 0.0 ) ;
 	vec3 vLightBack_cel = vec3( 0.0 ) ;
 	
+	vLightFront_cel += getAmbientLightIrradiance( ambientLightColor ) * RECIPROCAL_PI ;
+	
 	#if NUM_POINT_LIGHTS > 0
 		for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
 			directLight = getPointDirectLightIrradiance( pointLights[ i ], geometry );
 			dotNL = dot( geometry.normal, directLight.direction );
+			
 			//*
 			if ( dotNL >= 0.8 ) { dotNL = 0.9 ; }
 			else if ( dotNL >= 0.3 ) { dotNL = 0.5 ; }
 			else if ( dotNL >= 0.0 ) { dotNL = 0.15 ; }
 			else { dotNL = 0.0 ; }
 			//*/
+			
 			directLightColor_Diffuse = PI * directLight.color;
-			vLightFront_cel += saturate( dotNL ) * directLightColor_Diffuse;
+			vLightFront_cel += dotNL * directLightColor_Diffuse;
+			
 			#ifdef DOUBLE_SIDED
-				vLightBack_cel += saturate( -dotNL ) * directLightColor_Diffuse;
+				vLightBack_cel += - dotNL * directLightColor_Diffuse;
 			#endif
+			
+			E = normalize( - vViewPosition ) ;
+			R = normalize( - reflect( directLight.direction , geometry.normal ) );
+			
+			dotRE = dot( R,E );
+			
+			//*
+			if ( dotRE >= 0.8 ) { dotRE = 0.9 ; }
+			else { dotRE = 0.0 ; }
+			//*/
+			
+			// Adjust the exponent (here 10.0) to your liking...
+			vLightFront_cel += directLightColor_Diffuse * pow( dotRE , 10.0 ) ;
 		}
 	#endif
 	
