@@ -6,6 +6,7 @@
 	"node" : true,
 	"browser" : true,
 	"jquery" : false,
+	"predef": [ "THREE" , "THREEx" ],
 	
 	
 	// Security

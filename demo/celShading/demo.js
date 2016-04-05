@@ -199,20 +199,8 @@ function init()
 	model.scale.set( 20 , 20 , 20 ) ;
 	scene.add( model ) ;
 	
-	//var modelOutlineGeometry = modelGeometry.clone() ;
-	//tdk.Geometry.dilate( modelOutlineGeometry , 0.2 ) ;
-	//console.log( modelOutlineGeometry ) ;
-	
-	var modelOutline = new THREE.Mesh(
-		tdk.Geometry.dilate( modelGeometry.clone() , 0.2 ) ,
-		new THREE.MeshBasicMaterial( { color: 'black' , wireframe: true , side: THREE.BackSide } )
-	) ;
-	
-	model.add( modelOutline ) ;
-	
-	model.rotation.x = tdk.DEGREE_90 ;
-	model.scale.set( 20 , 20 , 20 ) ;
-	scene.add( model ) ;
+	// Add the black outline
+	tdk.Object3D.outline( model , 1 ) ;
 	//*/
 	
 	/*
@@ -232,27 +220,11 @@ function init()
 	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
 	
 	cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
-	//scene.add( cube ) ;
-	
-	var cubeOutlineGeometry = cubeGeometry.clone() ;
-	tdk.Geometry.dilate( cubeOutlineGeometry , 0.2 ) ;
-	console.log( cubeOutlineGeometry ) ;
-	
-	var cubeOutline = new THREE.Mesh(
-		tdk.Geometry.dilate( cubeGeometry.clone() , 4 ) ,
-		new THREE.MeshBasicMaterial( { color: 'black' , wireframe: true , side: THREE.BackSide } )
-	) ;
-	//cubeOutline.position = cube.position ;
-	//Object.defineProperty( cubeOutline , 'position' , { value: cube.position , configurable: true } ) ;
-	//console.log( Object.getOwnPropertyDescriptor( cubeOutline , 'position' ) ) ;
-	//cubeOutline.position.set( 0 , -4 , 0 ) ;
-	cube.add( cubeOutline ) ;
-	cube.add( new THREE.VertexNormalsHelper( cube , 4 , 0x0000ff , 1 ) ) ;
-	cube.add( new THREE.VertexNormalsHelper( cubeOutline , 4 , 0x00ff00 , 1 ) ) ;
-	
 	cube.position.set( 0 , -400 , 0 ) ;
 	scene.add( cube ) ;
 	
+	// Add the black outline
+	tdk.Object3D.outline( cube , 1 ) ;
 	//*/
 	
 	// create a small sphere to show position of light
