@@ -1,11 +1,9 @@
 
-For Three.js r75, tested with Blender 2.75
-==========================================
+*For Three.js r75, tested with Blender 2.75*
 
 
 
-Preliminaries: install the Three.js exporter add-on
----------------------------------------------------
+## Preliminaries: install the Three.js exporter add-on
 
 * Get the Three.js exporter for blender, located in the repository at: utils/exporters/blender/addons/io_three
 * Zip the whole directory: zip -r io_three.zip io_three
@@ -13,8 +11,7 @@ Preliminaries: install the Three.js exporter add-on
 
 
 
-Blender part
-------------
+## Blender part
 
 * Create a basic mesh, select all faces
 * Go to the texture panel (right panel), click the texture for material, choose the "image or movie" type, open your texture
@@ -40,8 +37,7 @@ Blender part
 
 
 
-Three.js part
--------------
+## Three.js part
 
 Your materials and textures would be lost, but your texture UV-mapping is OK.
 
