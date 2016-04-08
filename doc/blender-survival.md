@@ -31,6 +31,7 @@
 	S		scale the selection
 	Z		turn on/off wireframe mode
 	Shift-C	move the 3D cursor at origin
+	Shift-Tab	turn on/off snapping to the grid
 
 #### Menus
 
@@ -71,6 +72,7 @@
 	Ctrl-V	vertex menu
 	Ctrl-E	edge menu
 	Ctrl-F	face menu
+	W		Special
 	U		unwrap menu
 
 
@@ -80,7 +82,8 @@
 * Split vertex normal: left panel, “modifier” tab, “add modifier” > “edge split”
 * Add armature/bones: Object mode, Shift-A
 * Assign an object to a bone/armature: Object mode, Ctrl-P
-
-
+* Add a vertex at the center of a face: select it, E (extrude), S (scale), 0 (scale to 0 size), Ctrl-V > “remove double” (remove
+  duplicated vertices)
+* Bridge edge loop: select 2 loops, W > “Bridge edge loop”
 
 
