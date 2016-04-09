@@ -173,10 +173,11 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	//*
 	var loader = new THREE.JSONLoader() ;
-	//console.log( require( './car.json' ) ) ;
-	var parsed = loader.parse( require( './car.json' ) ) ;
+	var parsed ;
+	
+	//*
+	parsed = loader.parse( require( '../models/car.json' ) ) ;
 	//console.log( parsed ) ;
 	var modelGeometry = parsed.geometry ;
 	var modelTexture = new THREE.TextureLoader().load( '../tex/wood-plank.jpg' ) ;
@@ -202,6 +203,22 @@ function init()
 	// Add the black outline
 	tdk.Object3D.outline( model , 1 ) ;
 	//*/
+	
+	
+	//*
+	parsed = loader.parse( require( '../models/sword.json' ) ) ;
+	console.log( parsed ) ;
+	var sword = new THREE.Mesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
+	sword.rotation.x = tdk.DEGREE_90 ;
+	sword.scale.set( 20 , 20 , 20 ) ;
+	sword.position.x = - 200 ;
+	sword.position.z = 100 ;
+	scene.add( sword ) ;
+	
+	// Add the black outline
+	tdk.Object3D.outline( sword , 0.5 ) ;
+	//*/
+	
 	
 	/*
 	//var edges = new THREE.FaceNormalsHelper( model, 2, 0x00ff00, 1 );

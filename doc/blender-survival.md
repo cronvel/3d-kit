@@ -6,6 +6,9 @@
 	X		constrain mouse operation to the X-axis
 	Y		constrain mouse operation to the Y-axis
 	Z		constrain mouse operation to the Z-axis
+	Shift-X	constrain mouse operation to the Y-Z plane
+	Shift-Y	constrain mouse operation to the X-Z plane
+	Shift-Z	constrain mouse operation to the X-Y plane
 
 #### View
 
@@ -48,6 +51,7 @@
 
 ### Object mode
 
+	Shift-D	duplicate object
 	Ctrl-N	normal outside
 	Ctrl-J	merge objects
 
@@ -79,11 +83,22 @@
 
 ## Howto
 
-* Split vertex normal: left panel, “modifier” tab, “add modifier” > “edge split”
+* Split edge/vertex normal: select sharp edges, then mark them as sharp: Ctrl-E > “mark as sharp”, then in the right panel,
+  “modifier” tab, “add modifier” > “edge split”
 * Add armature/bones: Object mode, Shift-A
 * Assign an object to a bone/armature: Object mode, Ctrl-P
 * Add a vertex at the center of a face: select it, E (extrude), S (scale), 0 (scale to 0 size), Ctrl-V > “remove double” (remove
   duplicated vertices)
 * Bridge edge loop: select 2 loops, W > “Bridge edge loop”
+
+
+
+### Bones
+
+* Add a bone: Shift-A “add armature” > “single bone”
+* Add a bone connected to the selected bone: E (extrusion)
+* Make a bone to depend on another unconnected bone: select the child, select the parent, Ctrl-P > “Keep Offset”
+
+
 
 

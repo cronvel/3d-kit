@@ -71,3 +71,22 @@ scene.add( edges ) ;
 ```
 
 
+
+## Export material (without texture)
+
+If you want to export more than just raw geometries, but raw material (without texture):
+
+* In blender: export the file: File > Export > Three.js (.json), do not forget to check the option “face materials”
+* The Three.js source code becomes:
+
+```
+var loader = new THREE.JSONLoader() ;
+var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
+var model = new THREE.Mesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
+scene.add( model ) ;
+```
+
+Notice the `new THREE.MeshFaceMaterial`.
+
+
+
