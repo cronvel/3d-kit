@@ -39,6 +39,7 @@ var clock = new THREE.Clock() ;
 // custom global variables
 var cube ;
 var pointLight , pointLightAngle = 0 , lightSphere ;
+var animationMixer ;
 
 init() ;
 animate() ;
@@ -142,21 +143,28 @@ function init()
 	// CUSTOM //
 	////////////
 	
-	var brickTexture = new THREE.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
-	brickTexture.anisotropy = 16 ;
+	var loader = new THREE.JSONLoader() ;
+	var parsed ;
 	
-	var brickBump = new THREE.TextureLoader().load( '../tex/stone-wall.jpg' ) ;
-	brickBump.anisotropy = 16 ;
+	//*
+	parsed = loader.parse( require( '../models/slash.json' ) ) ;
+	console.log( parsed ) ;
 	
-	var cubeMaterial = new THREE.MeshLambertMaterial( { map: brickTexture } ) ;
-	var cubeMaterialBump = new THREE.MeshPhongMaterial( { map: brickTexture, bumpMap: brickBump } ) ;
+	// Enable skinning for each material, not sure why this does not work out of the box...
+	parsed.materials.forEach( mat => mat.skinning = true ) ;
 	
-	var cubeGeometry = new THREE.CubeGeometry( 50 , 50 , 50 ) ;
+	var sword = new THREE.SkinnedMesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
+	animationMixer = new THREE.AnimationMixer( sword ) ;
+	var slashAction = animationMixer.clipAction( parsed.geometry.animations[ 2 ] ) ;
+	slashAction.setEffectiveWeight( 1 ) ;
+	slashAction.play() ;
 	
-	//cube = new THREE.Mesh( cubeGeometry , cubeMaterial ) ;
-	cube = new THREE.Mesh( cubeGeometry , cubeMaterialBump ) ;
-	cube.position.set( 0 , 0 , 0 ) ;
-	scene.add( cube ) ;
+	sword.rotation.x = tdk.DEGREE_90 ;
+	sword.position.z = 100 ;
+	sword.scale.set( 20 , 20 , 20 ) ;
+	scene.add( sword ) ;
+	//*/
+	
 	
 	// create a small sphere to show position of light
 	lightSphere = new THREE.Mesh( 
@@ -196,9 +204,8 @@ function update()
 		// do something
 	}
 	
-	cube.rotation.x += 0.003 ;
-	cube.rotation.z += 0.001 ;
-	
+	var delta = clock.getDelta() ;
+	if ( animationMixer ) { animationMixer.update( delta ); }
 	
 	pointLightAngle += 0.01 ;
 	pointLight.position.set( 200 * Math.cos( pointLightAngle ) , 200 * Math.sin( pointLightAngle ) , 200 * Math.sin( pointLightAngle / 100 ) ) ;

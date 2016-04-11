@@ -90,3 +90,48 @@ Notice the `new THREE.MeshFaceMaterial`.
 
 
 
+## Export animation
+
+* When exporting in Blender, check “bones”, “skinning”, “skeletal animation”: “pose”, “embed animation”.
+
+* Load the skinned mesh:
+
+```
+// Load the Geometry
+var loader = new THREE.JSONLoader() ;
+var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
+var modelGeometry = parsed.geometry ;
+
+// Enable skinning for each material, not sure why this does not work out of the box...
+parsed.materials.forEach( mat => mat.skinning = true ) ;
+
+// Use SkinnedMesh() instead of Mesh
+var model = new THREE.SkinnedMesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
+
+// Create the animation mixer
+var animationMixer = new THREE.AnimationMixer( model ) ;
+
+// Get the first animation
+var action = animationMixer.clipAction( parsed.geometry.animations[ 0 ] ) ;
+
+action.setEffectiveWeight( 1 ) ;
+action.play() ;
+
+scene.add( model ) ;
+```
+
+* In your update function, do not forget to call `animationMixer.update()`:
+
+```
+function update()
+{
+	// ...
+	
+	var delta = clock.getDelta() ;
+	if ( animationMixer ) { animationMixer.update( delta ); }
+	
+	// ...
+}
+```
+
+

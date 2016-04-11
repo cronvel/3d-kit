@@ -80,6 +80,7 @@
 ### Pose mode
 
 	Shift-Ctrl-C	Set a bone as a constraint of another
+	Ctrl-A		Apply menu (apply the “rest pose”)
 
 
 
