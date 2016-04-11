@@ -22,7 +22,8 @@
 	Shift-Y	constrain mouse operation to the X-Z plane
 	Shift-Z	constrain mouse operation to the X-Y plane
 	
-	tab		switch from object-mode to edit-mode
+	tab		switch between object-mode and edit-mode
+	Ctrl-tab	switch between object-mode and weight-paint-mode
 	G		translate the selection
 	R		rotate the selection
 	S		scale the selection
@@ -57,6 +58,7 @@
 	Ctrl-T	track menu
 	Shift-A	add menu (mesh, armature, camera, etc)
 	Ctrl-P	“set parent to” menu, e.g. assign an object to a bone/armature
+	Alt-P	“clear parent” menu
 
 
 
@@ -77,10 +79,17 @@
 
 
 
+### Weight paint mode
+
+	Shift-LMB	Select the vertex group (i.e. the bone to set weight for)
+
+
+
 ### Pose mode
 
 	Shift-Ctrl-C	Set a bone as a constraint of another
-	Ctrl-A		Apply menu (apply the “rest pose”)
+	Ctrl-A	Apply menu (apply the “rest pose”)
+	Shift-I	set the first bone as an IK	of the active bone
 
 
 
@@ -116,7 +125,10 @@
   select the bone that will be under inverse kinematic influence, go to the “bone constraints” tab (right panel),
   click “add bone constraints” > “inverse kinematic”, then choose the new armature as “target”, and choose the IK bone
   as “bone”. The “chain length” value is the number of bones affected by the controler bone, and “0” means “all bones”.
-  Alternatively, select the IK bone, then the controled bone and hit Shift-Ctrl-C
+	
+	* Alternatively, select the IK bone, then the controled bone and hit Shift-Ctrl-C
+	* Alternatively, select the IK bone, then the controled bone and hit Shift-I
+	
 * Make a bone controle rotation: same than previous but use “pole target” instead of target
 * Assign object and vertices to armature: select object, select armature, Ctrl-P (“set parent”) > “with automatic weight”
 

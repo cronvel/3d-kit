@@ -155,12 +155,12 @@ function init()
 	
 	var sword = new THREE.SkinnedMesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
 	animationMixer = new THREE.AnimationMixer( sword ) ;
-	var slashAction = animationMixer.clipAction( parsed.geometry.animations[ 2 ] ) ;
+	var slashAction = animationMixer.clipAction( parsed.geometry.animations[ 0 ] ) ;
 	slashAction.setEffectiveWeight( 1 ) ;
 	slashAction.play() ;
 	
 	sword.rotation.x = tdk.DEGREE_90 ;
-	sword.position.z = 100 ;
+	sword.position.z = 30 ;
 	sword.scale.set( 20 , 20 , 20 ) ;
 	scene.add( sword ) ;
 	//*/
