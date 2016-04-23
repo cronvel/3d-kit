@@ -59,6 +59,7 @@
 	Shift-A	add menu (mesh, armature, camera, etc)
 	Ctrl-P	“set parent to” menu, e.g. assign an object to a bone/armature
 	Alt-P	“clear parent” menu
+	Shift-Ctrl-Alt-C	origin menu
 
 
 
@@ -66,15 +67,17 @@
 
 	A		select all faces/edges/vertices
 	E		extrude the selection
+	P		separate/split/ungroup part of an object
 	Ctrl-N	normal outside
 	Ctrl-T	convert to tris
+	Ctrl-L	select the whole connected geometry from the selection
 
 #### Menus
 
 	Ctrl-V	vertex menu
 	Ctrl-E	edge menu
 	Ctrl-F	face menu
-	W		Special
+	W		Special (bridge edge loop, etc)
 	U		unwrap menu
 
 
@@ -106,6 +109,7 @@
 
 # Howto
 
+* Remove/merge vertices: Ctrl-V > “remove double”
 * Split edge/vertex normal: select sharp edges, then mark them as sharp: Ctrl-E > “mark as sharp”, then in the right panel,
   “modifier” tab, “add modifier” > “edge split”
 * Add armature/bones: Object mode, Shift-A
@@ -113,7 +117,13 @@
 * Add a vertex at the center of a face: select it, E (extrude), S (scale), 0 (scale to 0 size), Ctrl-V > “remove double” (remove
   duplicated vertices)
 * Bridge edge loop: select 2 loops, W > “Bridge edge loop”
-
+* Add a background image: in the 3D view, “N” (open right panel) then scroll down to “background image”, works only in
+  orthographic views
+* Mirror an object: select it, go to the modifier tab, “add modifier” > “mirror”
+* CSG: select both object, go to the modifier tab, “add modifier” > “boolean”
+* Split/separate/ungroup part of an object, i.e. move it to a new object: select some faces, then hit “P” > “Selection”.
+* Make face between 2 edge loop: “W” > “bridge edge loop”
+* Reset the orgin of an object: in object mode, “Shift-Ctrl-Alt-C” > “center to geometry”
 
 
 ## Bones, skinning
