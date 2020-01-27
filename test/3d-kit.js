@@ -22,18 +22,13 @@
 	SOFTWARE.
 */
 
-/* jshint unused:false */
 /* global describe, it, before, after */
 
 
 
-var expect = require( 'expect.js' ) ;
-
-
-
-describe( "..." , function() {
+describe( "..." , () => {
 	
-	it( "..." , function() {
+	it( "..." , () => {
 	} ) ;
 } ) ;
 

@@ -28,13 +28,13 @@
 
 
 
-var tdk = require( '../../lib/tdk.js' ) ;
+const tdk = require( '../..' ) ;
 
 
 
 // standard global variables
 var scene , camera , engine , controls = null ;
-var keyboard = tdk.Keyboard() ;
+var keyboard = new tdk.Keyboard() ;
 var clock = new THREE.Clock() ;
 // custom global variables
 var cube ;

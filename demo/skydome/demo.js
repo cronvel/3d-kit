@@ -28,7 +28,7 @@
 
 
 
-var tdk = require( '../../lib/tdk.js' ) ;
+const tdk = require( '../..' ) ;
 
 
 

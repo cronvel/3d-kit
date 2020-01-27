@@ -1,5 +1,5 @@
 
-var tdk = require( '../../lib/tdk.js' ) ;
+const tdk = require( '../..' ) ;
 
 var scene, camera, renderer;
 var geometry, material, mesh;
