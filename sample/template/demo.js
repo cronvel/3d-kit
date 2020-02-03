@@ -36,6 +36,7 @@ const BABYLON = require( 'babylonjs' ) ;
 // standard global variables
 var scene , camera ;
 var pointLightPosition ;
+var cube ;
 var canvas = document.getElementById( "renderCanvas" ) ;	// Get the canvas element
 var engine = new BABYLON.Engine( canvas , true ) ;	// Generate the BABYLON 3D engine
 
@@ -110,12 +111,23 @@ function createScene() {
 	floor.material = floorMaterial ;
 	floor.rotation.x = Math.PI ;
 
-	// This is where you create and manipulate meshes
-	var sphere = BABYLON.MeshBuilder.CreateSphere( "sphere" , {} , scene ) ;
-	sphere.position.z = 1 ;
+	
 
-	var miniSphere = BABYLON.MeshBuilder.CreateSphere( "miniSphere" , { diameter: 0.5 } , scene ) ;
-	miniSphere.position.z = 2 ;
+	/* Custom part */
+	
+	// Create a Standard Material
+	var brickMaterial = new BABYLON.StandardMaterial( 'brickMaterial' , scene ) ;
+
+	// Add and scale the (diffuse) texture and fix default light
+	brickMaterial.diffuseTexture = new BABYLON.Texture( '../tex/stone-wall.jpg' , scene ) ;
+	brickMaterial.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	brickMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+
+	// Now create the ground plane
+	cube = BABYLON.MeshBuilder.CreateBox( "cube" , { size: 1 } , scene ) ;
+	cube.material = brickMaterial ;
+	cube.position.z = 1 ;
+	cube.rotation.x = Math.PI ;
 }
 
 
@@ -130,6 +142,8 @@ function run() {
 		pointLightPosition.x = radius * Math.cos( t ) ;
 		pointLightPosition.y = radius * Math.sin( t ) ;
 		pointLightPosition.z = 3 + 2 * Math.sin( t * 1.57 ) ;
+		cube.rotation.z += 0.01 ;
+		cube.rotation.x += 0.005 ;
 		scene.render() ;
 		t += 0.01 ;
 	} ) ;
