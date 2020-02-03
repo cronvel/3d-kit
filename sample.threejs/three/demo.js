@@ -1,5 +1,5 @@
 
-const tdk = require( '../..' ) ;
+const tdk = require( '../../lib.threejs/tdk.js' ) ;
 
 var scene, camera, renderer;
 var geometry, material, mesh;

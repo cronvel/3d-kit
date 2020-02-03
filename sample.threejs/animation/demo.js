@@ -28,7 +28,7 @@
 
 
 
-const tdk = require( '../..' ) ;
+const tdk = require( '../../lib.threejs/tdk.js' ) ;
 
 
 

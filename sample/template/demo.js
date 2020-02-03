@@ -34,45 +34,86 @@ const BABYLON = require( 'babylonjs' ) ;
 
 
 // standard global variables
+var scene , camera ;
 var canvas = document.getElementById( "renderCanvas" ) ;	// Get the canvas element
 var engine = new BABYLON.Engine( canvas , true ) ;	// Generate the BABYLON 3D engine
 
 
 
 function createScene() {
+
+		/* SCENE */
+
 	// Create the scene space
-	var scene = new BABYLON.Scene( engine ) ;
+	scene = new BABYLON.Scene( engine ) ;
 	
 	// Important, because by default the coordinate system is like DirectX (left-handed) not like math and OpneGL (right-handed)
 	scene.useRightHandedSystem = true ;
 
+
+
+		/* CAMERA */
+
 	// Add a camera to the scene and attach it to the canvas
-	var camera = new BABYLON.ArcRotateCamera( "Camera" , Math.PI / 2 , Math.PI / 2 , 2 , BABYLON.Vector3.Zero() , scene ) ;
+	camera = new BABYLON.ArcRotateCamera( "Camera" , Math.PI / 2 , Math.PI / 2 , 2 , new BABYLON.Vector3(0,0,1) , scene ) ;
+	
+	// Make Z-axis the up vector
 	camera.upVector = new BABYLON.Vector3( 0 , 0 , 1 ) ;	// Z-up
+	
+	// Make the canvas events control the camera
 	camera.attachControl( canvas , true ) ;
+	
+	// Make the mouse wheel move less
+	camera.wheelPrecision = 20 ;
 
+
+
+		/* LIGHT */
+
+	// Ambient light
+	scene.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+	
 	// Add lights to the scene
-	var light1 = new BABYLON.HemisphericLight( "light1" , new BABYLON.Vector3( 1 , 1 , 0 ) , scene ) ;
-	var light2 = new BABYLON.PointLight( "light2" , new BABYLON.Vector3( 0 , 1 , -1 ) , scene ) ;
+	var pointLight = new BABYLON.PointLight( "pointLight" , new BABYLON.Vector3( -1 , -1 , 1 ) , scene ) ;
+	//var light1 = new BABYLON.HemisphericLight( "light1" , new BABYLON.Vector3( 1 , 1 , 0 ) , scene ) ;
 
+
+
+		/* FLOOR */
+
+	var floorMaterial = new BABYLON.StandardMaterial( 'floorMaterial' , scene ) ;
+	floorMaterial.diffuseTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
+	//floorMaterial.specularColor = new BABYLON.Color3( 1,1,1 ) ;
+	floorMaterial.specularColor = new BABYLON.Color3( 0,0,0 ) ;
+	floorMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+	//floorMaterial.ambientTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
+	var floor = BABYLON.MeshBuilder.CreatePlane( "floor" , { size: 100 } , scene ) ;
+	floor.material = floorMaterial ;
+	floor.rotation.x = Math.PI ;
+	
 	// This is where you create and manipulate meshes
 	var sphere = BABYLON.MeshBuilder.CreateSphere( "sphere" , {} , scene ) ;
+	sphere.position.z = 1 ;
 
 	var miniSphere = BABYLON.MeshBuilder.CreateSphere( "miniSphere" , { diameter: 0.5 } , scene ) ;
-	miniSphere.position.z = 1 ;
-
-	return scene ;
+	miniSphere.position.z = 2 ;
 }
 
-var scene = createScene() ;
 
-// Register a render loop to repeatedly render the scene
-engine.runRenderLoop( () => {
-	scene.render() ;
-} ) ;
 
-// Watch for browser/canvas resize events
-window.addEventListener( "resize" , () => {
-	engine.resize() ;
-} ) ;
+function run() {
+	createScene() ;
+
+	// Register a render loop to repeatedly render the scene
+	engine.runRenderLoop( () => {
+		scene.render() ;
+	} ) ;
+
+	// Watch for browser/canvas resize events
+	window.addEventListener( "resize" , () => {
+		engine.resize() ;
+	} ) ;
+}
+
+run() ;
 
