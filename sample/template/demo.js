@@ -35,6 +35,7 @@ const BABYLON = require( 'babylonjs' ) ;
 
 // standard global variables
 var scene , camera ;
+var pointLightPosition ;
 var canvas = document.getElementById( "renderCanvas" ) ;	// Get the canvas element
 var engine = new BABYLON.Engine( canvas , true ) ;	// Generate the BABYLON 3D engine
 
@@ -42,55 +43,73 @@ var engine = new BABYLON.Engine( canvas , true ) ;	// Generate the BABYLON 3D en
 
 function createScene() {
 
-		/* SCENE */
+	/* SCENE */
 
 	// Create the scene space
 	scene = new BABYLON.Scene( engine ) ;
-	
+
 	// Important, because by default the coordinate system is like DirectX (left-handed) not like math and OpneGL (right-handed)
 	scene.useRightHandedSystem = true ;
 
 
 
-		/* CAMERA */
+	/* CAMERA */
 
 	// Add a camera to the scene and attach it to the canvas
-	camera = new BABYLON.ArcRotateCamera( "Camera" , Math.PI / 2 , Math.PI / 2 , 2 , new BABYLON.Vector3(0,0,1) , scene ) ;
-	
+	camera = new BABYLON.ArcRotateCamera( "Camera" , Math.PI / 2 , Math.PI / 2 , 2 , new BABYLON.Vector3( 0 , 0 , 1 ) , scene ) ;
+
 	// Make Z-axis the up vector
 	camera.upVector = new BABYLON.Vector3( 0 , 0 , 1 ) ;	// Z-up
-	
+
 	// Make the canvas events control the camera
 	camera.attachControl( canvas , true ) ;
-	
+
 	// Make the mouse wheel move less
 	camera.wheelPrecision = 20 ;
 
 
 
-		/* LIGHT */
+	/* LIGHT */
 
 	// Ambient light
 	scene.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
-	
-	// Add lights to the scene
-	var pointLight = new BABYLON.PointLight( "pointLight" , new BABYLON.Vector3( -1 , -1 , 1 ) , scene ) ;
-	//var light1 = new BABYLON.HemisphericLight( "light1" , new BABYLON.Vector3( 1 , 1 , 0 ) , scene ) ;
+
+	// Add a point light to the scene
+	pointLightPosition = new BABYLON.Vector3( 5 , 0 , 5 ) ;
+	var pointLight = new BABYLON.PointLight( "pointLight" , pointLightPosition , scene ) ;
+
+	// Add a physical sphere for the point light
+	var pointLightSphere = BABYLON.MeshBuilder.CreateSphere( "pointLightSphere" , { diameter: 0.1 } , scene ) ;
+	pointLightSphere.position = pointLightPosition ;
+	pointLightSphere.material = new BABYLON.StandardMaterial( 'floorMaterial' , scene ) ;
+	pointLightSphere.material.diffuseColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	pointLightSphere.material.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	pointLightSphere.material.emissiveColor = new BABYLON.Color3( 1 , 1 , 0 ) ;
 
 
 
-		/* FLOOR */
+	/* FLOOR */
 
+	// Create a Standard Material
 	var floorMaterial = new BABYLON.StandardMaterial( 'floorMaterial' , scene ) ;
+
+	// Add and scale the (diffuse) texture so it repeat 5 times
 	floorMaterial.diffuseTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
-	//floorMaterial.specularColor = new BABYLON.Color3( 1,1,1 ) ;
-	floorMaterial.specularColor = new BABYLON.Color3( 0,0,0 ) ;
+	floorMaterial.diffuseTexture.uScale = floorMaterial.diffuseTexture.vScale = 5 ;
+
+	// No specular for dirt ground
+	//floorMaterial.specularColor = new BABYLON.Color3( 1 , 1 , 1 ) ;
+	floorMaterial.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+
+	// Add some ambient, ambient will still use the diffuse texture as its base
 	floorMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
 	//floorMaterial.ambientTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
+
+	// Now create the ground plane
 	var floor = BABYLON.MeshBuilder.CreatePlane( "floor" , { size: 100 } , scene ) ;
 	floor.material = floorMaterial ;
 	floor.rotation.x = Math.PI ;
-	
+
 	// This is where you create and manipulate meshes
 	var sphere = BABYLON.MeshBuilder.CreateSphere( "sphere" , {} , scene ) ;
 	sphere.position.z = 1 ;
@@ -104,9 +123,15 @@ function createScene() {
 function run() {
 	createScene() ;
 
+	var t = 0 , radius = 5 ;
+
 	// Register a render loop to repeatedly render the scene
 	engine.runRenderLoop( () => {
+		pointLightPosition.x = radius * Math.cos( t ) ;
+		pointLightPosition.y = radius * Math.sin( t ) ;
+		pointLightPosition.z = 3 + 2 * Math.sin( t * 1.57 ) ;
 		scene.render() ;
+		t += 0.01 ;
 	} ) ;
 
 	// Watch for browser/canvas resize events

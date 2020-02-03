@@ -53,7 +53,7 @@ app.on( 'ready' , function() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow( {
 		width: 800 ,
-		height: 480 ,
+		height: 600 ,
 		webPreferences: {
 			nodeIntegration: true
 		}
