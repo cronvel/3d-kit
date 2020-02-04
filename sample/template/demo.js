@@ -119,7 +119,10 @@ function createScene() {
 	var brickMaterial = new BABYLON.StandardMaterial( 'brickMaterial' , scene ) ;
 
 	// Add and scale the (diffuse) texture and fix default light
+	//brickMaterial.diffuseTexture = new BABYLON.Texture( '../tex/crate.png' , scene ) ;
+	//brickMaterial.bumpTexture = new BABYLON.Texture( '../tex/crate.normal.png' , scene ) ;
 	brickMaterial.diffuseTexture = new BABYLON.Texture( '../tex/stone-wall.jpg' , scene ) ;
+	brickMaterial.bumpTexture = new BABYLON.Texture( '../tex/stone-wall.jpg' , scene ) ;
 	brickMaterial.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
 	brickMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
 
@@ -142,8 +145,8 @@ function run() {
 		pointLightPosition.x = radius * Math.cos( t ) ;
 		pointLightPosition.y = radius * Math.sin( t ) ;
 		pointLightPosition.z = 3 + 2 * Math.sin( t * 1.57 ) ;
-		cube.rotation.z += 0.01 ;
-		cube.rotation.x += 0.005 ;
+		//cube.rotation.z += 0.01 ;
+		//cube.rotation.x += 0.005 ;
 		scene.render() ;
 		t += 0.01 ;
 	} ) ;
