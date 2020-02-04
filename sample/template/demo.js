@@ -89,13 +89,29 @@ function createScene() {
 
 
 
+	/* SKY */
+
+	var skybox = BABYLON.MeshBuilder.CreateBox( "skyBox" , { size: 1000 } , scene ) ;
+	var skyboxMaterial = new BABYLON.StandardMaterial( "skyBox" , scene ) ;
+	skyboxMaterial.backFaceCulling = false ;
+	skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture( "../textures/skybox" , scene ) ;
+	skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE ;
+	skyboxMaterial.diffuseColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	skyboxMaterial.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	skybox.material = skyboxMaterial ;
+	
+	// Because I use Z-up but the skybox files are named for a Y-up system
+	skybox.rotation.x = Math.PI / 2 ;
+
+
+
 	/* FLOOR */
 
 	// Create a Standard Material
 	var floorMaterial = new BABYLON.StandardMaterial( 'floorMaterial' , scene ) ;
 
 	// Add and scale the (diffuse) texture so it repeat 5 times
-	floorMaterial.diffuseTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
+	floorMaterial.diffuseTexture = new BABYLON.Texture( '../textures/dirt-ground.jpg' , scene ) ;
 	floorMaterial.diffuseTexture.uScale = floorMaterial.diffuseTexture.vScale = 5 ;
 
 	// No specular for dirt ground
@@ -104,27 +120,28 @@ function createScene() {
 
 	// Add some ambient, ambient will still use the diffuse texture as its base
 	floorMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
-	//floorMaterial.ambientTexture = new BABYLON.Texture( '../tex/dirt-ground.jpg' , scene ) ;
+	//floorMaterial.ambientTexture = new BABYLON.Texture( '../textures/dirt-ground.jpg' , scene ) ;
 
 	// Now create the ground plane
 	var floor = BABYLON.MeshBuilder.CreatePlane( "floor" , { size: 100 } , scene ) ;
 	floor.material = floorMaterial ;
 	floor.rotation.x = Math.PI ;
 
-	
 
-	/* Custom part */
-	
+
+	/* CUSTOM PART */
+
 	// Create a Standard Material
 	var brickMaterial = new BABYLON.StandardMaterial( 'brickMaterial' , scene ) ;
 
 	// Add and scale the (diffuse) texture and fix default light
-	//brickMaterial.diffuseTexture = new BABYLON.Texture( '../tex/crate.png' , scene ) ;
-	//brickMaterial.bumpTexture = new BABYLON.Texture( '../tex/crate.normal.png' , scene ) ;
-	brickMaterial.diffuseTexture = new BABYLON.Texture( '../tex/stone-wall.jpg' , scene ) ;
-	brickMaterial.bumpTexture = new BABYLON.Texture( '../tex/stone-wall.jpg' , scene ) ;
+	brickMaterial.diffuseTexture = new BABYLON.Texture( '../textures/stone-wall.jpg' , scene ) ;
 	brickMaterial.specularColor = new BABYLON.Color3( 0 , 0 , 0 ) ;
 	brickMaterial.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+
+	// Add bump mapping
+	// Online tool to create normal map: https://www.smart-page.net/smartnormal/
+	brickMaterial.bumpTexture = new BABYLON.Texture( '../textures/stone-wall.normal.png' , scene ) ;
 
 	// Now create the ground plane
 	cube = BABYLON.MeshBuilder.CreateBox( "cube" , { size: 1 } , scene ) ;
