@@ -9,6 +9,7 @@
   "dependencies": {
     "async-kit": "^1.0.0",
     "babylonjs": "^4.0.3",
+    "babylonjs-loaders": "^4.0.3",
     "dom-kit": "^0.1.0",
     "math-kit": "^0.3.3",
     "stats.js": "0.0.14-master",

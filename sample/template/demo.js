@@ -30,19 +30,20 @@
 
 const tdk = require( '../..' ) ;
 const BABYLON = require( 'babylonjs' ) ;
+require( 'babylonjs-loaders' ) ;	// No need to assign it, it's a plugin, it will modify BABYLON all by itself
 
 
 
 // standard global variables
 var scene , camera ;
 var pointLightPosition ;
-var cube ;
+var cube , model ;
 var canvas = document.getElementById( "renderCanvas" ) ;	// Get the canvas element
 var engine = new BABYLON.Engine( canvas , true ) ;	// Generate the BABYLON 3D engine
 
 
 
-function createScene() {
+async function createScene() {
 
 	/* SCENE */
 
@@ -143,17 +144,23 @@ function createScene() {
 	// Online tool to create normal map: https://www.smart-page.net/smartnormal/
 	brickMaterial.bumpTexture = new BABYLON.Texture( '../textures/stone-wall.normal.png' , scene ) ;
 
-	// Now create the ground plane
+	// Now create cube
 	cube = BABYLON.MeshBuilder.CreateBox( "cube" , { size: 1 } , scene ) ;
 	cube.material = brickMaterial ;
 	cube.position.z = 1 ;
 	cube.rotation.x = Math.PI ;
+	
+	// Test models
+	var imported = await BABYLON.SceneLoader.ImportMeshAsync( "Sword" , "../models/sword.gltf" , null , scene ) ;
+	console.log( "Imported:" , imported ) ;
+	model = imported.meshes[ 0 ] ;
+	model.position.z = 3 ;
 }
 
 
 
-function run() {
-	createScene() ;
+async function run() {
+	await createScene() ;
 
 	var t = 0 , radius = 5 ;
 
@@ -162,8 +169,10 @@ function run() {
 		pointLightPosition.x = radius * Math.cos( t ) ;
 		pointLightPosition.y = radius * Math.sin( t ) ;
 		pointLightPosition.z = 3 + 2 * Math.sin( t * 1.57 ) ;
-		//cube.rotation.z += 0.01 ;
-		//cube.rotation.x += 0.005 ;
+		cube.rotation.z += 0.001 ;
+		cube.rotation.x += 0.0004 ;
+		model.rotation.z += 0.01 ;
+		model.rotation.x += 0.004 ;
 		scene.render() ;
 		t += 0.01 ;
 	} ) ;
