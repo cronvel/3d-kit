@@ -48,19 +48,31 @@
     ],
     "materials" : [
         {
-            "doubleSided" : true,
+            "doubleSided" : false,
             "name" : "steel",
-            "pbrMetallicRoughness" : {}
+            "pbrMetallicRoughness" : {
+                "baseColorFactor": [ 0.571, 0.732, 0.800, 1.0 ],
+                "metallicFactor": 0.8,
+                "roughnessFactor": 0.5
+			}
         },
         {
-            "doubleSided" : true,
+            "doubleSided" : false,
             "name" : "brown",
-            "pbrMetallicRoughness" : {}
+            "pbrMetallicRoughness" : {
+                "baseColorFactor": [ 0.227, 0.009, 0.002, 1.0 ],
+                "metallicFactor": 0.0,
+                "roughnessFactor": 0.5
+			}
         },
         {
-            "doubleSided" : true,
+            "doubleSided" : false,
             "name" : "gold",
-            "pbrMetallicRoughness" : {}
+            "pbrMetallicRoughness" : {
+                "baseColorFactor": [ 0.581, 0.392, 0.023, 1.0 ],
+                "metallicFactor": 0.8,
+                "roughnessFactor": 0.5
+			}
         }
     ],
     "meshes" : [

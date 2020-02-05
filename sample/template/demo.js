@@ -74,11 +74,18 @@ async function createScene() {
 	/* LIGHT */
 
 	// Ambient light
-	scene.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+	//scene.ambientColor = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+
+	var hemisphericLight = new BABYLON.HemisphericLight( "hemisphericLight" , new BABYLON.Vector3( 0 , 0 , 1 ) , scene ) ;
+	hemisphericLight.diffuse = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
+	hemisphericLight.specular = new BABYLON.Color3( 0 , 0 , 0 ) ;
+	hemisphericLight.groundColor = new BABYLON.Color3( 0.2 , 0.1 , 0 ) ;
 
 	// Add a point light to the scene
 	pointLightPosition = new BABYLON.Vector3( 5 , 0 , 5 ) ;
 	var pointLight = new BABYLON.PointLight( "pointLight" , pointLightPosition , scene ) ;
+	pointLight.diffuse = new BABYLON.Color3( 0.5 , 0.5 , 0.4 ) ;
+	pointLight.specular = new BABYLON.Color3( 0.5 , 0.5 , 0.5 ) ;
 
 	// Add a physical sphere for the point light
 	var pointLightSphere = BABYLON.MeshBuilder.CreateSphere( "pointLightSphere" , { diameter: 0.1 } , scene ) ;
