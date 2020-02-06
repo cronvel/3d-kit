@@ -236,7 +236,7 @@ async function run() {
 		gltfModel.rotation.x += 0.004 ;
 		//*/
 		
-		//*
+		/*
 		babylonModel.yaw += 0.01 ;
 		babylonModel.pitch += 0.004 ;
 		//babylonModel.roll += 0.004 ;
