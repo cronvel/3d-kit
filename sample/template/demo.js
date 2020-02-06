@@ -1,7 +1,7 @@
 /*
-	The Cedric's Swiss Knife (CSK) - CSK 3D toolbox
+	3D Kit
 
-	Copyright (c) 2015 - 2016 Cédric Ronvel
+	Copyright (c) 2020 Cédric Ronvel
 
 	The MIT License (MIT)
 
@@ -71,35 +71,9 @@ async function createScene() {
 
 
 
-	/* AXIS SPHERES */
+	/* AXIS HELPER */
 	
-	var origin = Babylon.MeshBuilder.CreateSphere( "origin" , { diameter: 0.1 } , scene ) ;
-	origin.position = new Babylon.Vector3( 0 , 0 , 0 ) ;
-	origin.material = new Babylon.StandardMaterial( 'originMaterial' , scene ) ;
-	origin.material.diffuseColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	origin.material.specularColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	origin.material.emissiveColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-
-	var xdir = Babylon.MeshBuilder.CreateSphere( "xdir" , { diameter: 0.1 } , scene ) ;
-	xdir.position = new Babylon.Vector3( 1 , 0 , 0 ) ;
-	xdir.material = new Babylon.StandardMaterial( 'xdirMaterial' , scene ) ;
-	xdir.material.diffuseColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	xdir.material.specularColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	xdir.material.emissiveColor = new Babylon.Color3( 1 , 0 , 0 ) ;
-
-	var ydir = Babylon.MeshBuilder.CreateSphere( "ydir" , { diameter: 0.1 } , scene ) ;
-	ydir.position = new Babylon.Vector3( 0 , 1 , 0 ) ;
-	ydir.material = new Babylon.StandardMaterial( 'ydirMaterial' , scene ) ;
-	ydir.material.diffuseColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	ydir.material.specularColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	ydir.material.emissiveColor = new Babylon.Color3( 0 , 1 , 0 ) ;
-
-	var zdir = Babylon.MeshBuilder.CreateSphere( "zdir" , { diameter: 0.1 } , scene ) ;
-	zdir.position = new Babylon.Vector3( 0 , 0 , 1 ) ;
-	zdir.material = new Babylon.StandardMaterial( 'zdirMaterial' , scene ) ;
-	zdir.material.diffuseColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	zdir.material.specularColor = new Babylon.Color3( 0 , 0 , 0 ) ;
-	zdir.material.emissiveColor = new Babylon.Color3( 0 , 0 , 1 ) ;
+	tdk.utils.createAxisMeshes( scene ) ;
 
 
 
@@ -262,13 +236,15 @@ async function run() {
 		gltfModel.rotation.x += 0.004 ;
 		//*/
 		
-		/*
+		//*
 		babylonModel.yaw += 0.01 ;
+		babylonModel.pitch += 0.004 ;
+		//babylonModel.roll += 0.004 ;
 		//*/
 		
 		/*
 		babylonModel.rotation.z += 0.01 ;
-		//babylonModel.rotation.x += 0.004 ;
+		babylonModel.rotation.x += 0.004 ;
 		//*/
 		
 		scene.render() ;
