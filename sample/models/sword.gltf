@@ -52,8 +52,8 @@
             "name" : "steel",
             "pbrMetallicRoughness" : {
                 "baseColorFactor": [ 0.571, 0.732, 0.800, 1.0 ],
-                "metallicFactor": 0.8,
-                "roughnessFactor": 0.5
+                "metallicFactor": 1,
+                "roughnessFactor": 0.4
 			}
         },
         {
@@ -62,7 +62,7 @@
             "pbrMetallicRoughness" : {
                 "baseColorFactor": [ 0.227, 0.009, 0.002, 1.0 ],
                 "metallicFactor": 0.0,
-                "roughnessFactor": 0.5
+                "roughnessFactor": 0.6
 			}
         },
         {
@@ -70,8 +70,8 @@
             "name" : "gold",
             "pbrMetallicRoughness" : {
                 "baseColorFactor": [ 0.581, 0.392, 0.023, 1.0 ],
-                "metallicFactor": 0.8,
-                "roughnessFactor": 0.5
+                "metallicFactor": 1.0,
+                "roughnessFactor": 0.4
 			}
         }
     ],

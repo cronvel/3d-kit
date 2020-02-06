@@ -1,13 +1,12 @@
 
-*For Three.js r75, tested with Blender 2.75*
+*Tested with Blender v2.81a, Babylon exporter plugin v6.2.4 and Babylon.js v4.0.3.*
 
 
 
 ## Preliminaries: install the Three.js exporter add-on
 
-* Get the Three.js exporter for blender, located in the repository at: utils/exporters/blender/addons/io_three
-* Zip the whole directory: zip -r io_three.zip io_three
-* Open Blender, go to File > User Preferences, click the Add-ons tab, then "install from file", browse and select the io_three.zip
+* Get the Babylon.js exporter for blender, located in the repository at: https://github.com/BabylonJS/BlenderExporter
+* Open Blender, go to File > User Preferences, click the Add-ons tab, then "install from file", browse and select the zip
 
 
 
@@ -15,6 +14,8 @@
 
 * Create a basic mesh, select all faces
 * Go to the texture panel (right panel), click the texture for material, choose the "image or movie" type, open your texture
+* The object must have all transformations applied (or the model will load with already defined translation/rotation/scale
+  but we want to export using world coordinate), to apply: in 3D view, select the object Ctrl-A > “All transforms”
 * The model must have UV-mapping, if it doesn't, then:
 	* Below, set the coordinates' type to UV, flat projection
 	* In the top panel, choose the "UV editing" view
@@ -33,105 +34,17 @@
 	* click "add modifier" and choose "edge split"
 	* adjust the angle
 	* apply it: now your vertices normals should be OK
-* Export the file: File > Export > Three.js (.json)
+* In the “world” tab, check that decimal precision is enough
+* Export the file: File > Export > Babylon.js
 
 
 
-## Three.js part
+## Babylon.js part
 
 Your materials and textures would be lost, but your texture UV-mapping is OK.
 
 ```
-// Load the Geometry
-var loader = new THREE.JSONLoader() ;
-var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
-var modelGeometry = parsed.geometry ;
-
-// Manually load your texture
-var modelTexture = new THREE.TextureLoader().load( 'path/to/my/texture.jpg' ) ;
-
-// Really important: by default the texture is set to THREE.ClampToEdgeWrapping, which fucked up your UV-mapping
-modelTexture.wrapS = THREE.RepeatWrapping ;
-modelTexture.wrapT = THREE.RepeatWrapping ;
-
-var modelMaterial = new THREE.MeshLambertMaterial( { map: modelTexture } ) ;
-
-var model = new THREE.Mesh( modelGeometry , modelMaterial ) ;
-
-scene.add( model ) ;
+var imported = await Babylon.SceneLoader.ImportMeshAsync( "objectID" , "path/to/model.babylon" , null , scene ) ;
+model = imported.meshes[ 0 ] ;
 ```
-
-
-
-To debug normals:
-
-```
-var edges = new THREE.VertexNormalsHelper( model, 2, 0x00ff00, 1 ) ;
-scene.add( edges ) ;
-```
-
-
-
-## Export material (without texture)
-
-If you want to export more than just raw geometries, but raw material (without texture):
-
-* In blender: export the file: File > Export > Three.js (.json), do not forget to check the option “face materials”
-* The Three.js source code becomes:
-
-```
-var loader = new THREE.JSONLoader() ;
-var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
-var model = new THREE.Mesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
-scene.add( model ) ;
-```
-
-Notice the `new THREE.MeshFaceMaterial`.
-
-
-
-## Export animation
-
-* When exporting in Blender, check “bones”, “skinning”, “skeletal animation”: “pose”, “embed animation”.
-
-* Load the skinned mesh:
-
-```
-// Load the Geometry
-var loader = new THREE.JSONLoader() ;
-var parsed = loader.parse( require( 'path/to/blender/model.json' ) ) ;
-var modelGeometry = parsed.geometry ;
-
-// Enable skinning for each material, not sure why this does not work out of the box...
-parsed.materials.forEach( mat => mat.skinning = true ) ;
-
-// Use SkinnedMesh() instead of Mesh
-var model = new THREE.SkinnedMesh( parsed.geometry , new THREE.MeshFaceMaterial( parsed.materials ) ) ;
-
-// Create the animation mixer
-var animationMixer = new THREE.AnimationMixer( model ) ;
-
-// Get the first animation
-var action = animationMixer.clipAction( parsed.geometry.animations[ 0 ] ) ;
-
-action.setEffectiveWeight( 1 ) ;
-action.play() ;
-
-scene.add( model ) ;
-```
-
-* In your update function, do not forget to call `animationMixer.update()`:
-
-```
-function update()
-{
-	// ...
-	
-	var delta = clock.getDelta() ;
-	if ( animationMixer ) { animationMixer.update( delta ); }
-	
-	// ...
-}
-```
-
 

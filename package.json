@@ -11,7 +11,7 @@
     "babylonjs": "^4.0.3",
     "babylonjs-loaders": "^4.0.3",
     "dom-kit": "^0.1.0",
-    "math-kit": "^0.3.3",
+    "math-kit": "^0.12.9",
     "stats.js": "0.0.14-master",
     "three": "0.75.0",
     "tree-kit": "^0.5.19"

@@ -124,6 +124,9 @@
 * Split/separate/ungroup part of an object, i.e. move it to a new object: select some faces, then hit “P” > “Selection”.
 * Make face between 2 edge loop: “W” > “bridge edge loop”
 * Reset the orgin of an object: in object mode, “Shift-Ctrl-Alt-C” > “center to geometry”
+* “Apply” object transformation: in 3D view, select the object, click the “object” menu (at bottom) then
+  “Apply” > “All transforms”. Also Ctrl-A.
+
 
 
 ## Bones, skinning
