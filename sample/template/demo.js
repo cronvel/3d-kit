@@ -195,8 +195,10 @@ async function createScene() {
 	cube.position = new Babylon.Vector3( 0 , 0 , 2 ) ;
 	cube.rotation.x = Math.PI ;
 	
+	var imported ;
+	
 	/* Test .glTF models
-	var imported = await Babylon.SceneLoader.ImportMeshAsync( "Sword" , "../models/sword.gltf" , null , scene ) ;
+	imported = await Babylon.SceneLoader.ImportMeshAsync( "Sword" , "../models/sword.gltf" , null , scene ) ;
 	console.log( "Imported:" , imported ) ;
 	gltfModel = imported.meshes[ 0 ] ;
 	//gltfModel.position.z = 3 ;
@@ -204,8 +206,8 @@ async function createScene() {
 	gltfModel.rotation = new Babylon.Vector3(0,0,0) ;
 	//*/
 
-	//* Test .babylon models
-	var imported = await Babylon.SceneLoader.ImportMeshAsync( "Sword" , "../models/sword.babylon" , null , scene ) ;
+	/* Test .babylon models
+	imported = await Babylon.SceneLoader.ImportMeshAsync( "Sword" , "../models/sword.babylon" , null , scene ) ;
 	console.log( "Imported:" , imported ) ;
 	babylonModel = imported.meshes[ 0 ] ;
 	//babylonModel.position = new Babylon.Vector3(0,0,0) ;
@@ -213,6 +215,33 @@ async function createScene() {
 	//babylonModel.rotationQuaternion = new Babylon.Quaternion() ;
 	babylonModel.position.z = 3 ;
 	//babylonModel.roll = Math.PI / 2 ;
+	//*/
+
+	/* Test Blender's .babylon models with Z-up and right-handed option in the exporter
+	imported = await Babylon.SceneLoader.ImportMeshAsync( "Cube" , "../models/orientation-cube.babylon" , null , scene ) ;
+	console.log( "Imported:" , imported ) ;
+	var orientationCube = imported.meshes[ 0 ] ;
+	orientationCube.position.z = 5 ;
+	//*/
+
+	//* Test Blender's bone + animation
+	// See playground: https://www.babylonjs-playground.com/#BCU1XR#0
+	// See doc: https://doc.babylonjs.com/resources/mixamo_to_babylon
+	imported = await Babylon.SceneLoader.ImportMeshAsync( "ArmAndSword" , "../models/slash.babylon" , null , scene ) ;
+	console.log( "Imported:" , imported ) ;
+	var slashModel = imported.meshes[ 0 ] ;
+	slashModel.position.z = 5 ;
+	var skeleton = imported.skeletons[ 0 ] ;
+	skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride() ;
+	skeleton.animationPropertiesOverride.enableBlending = true ;
+	skeleton.animationPropertiesOverride.blendingSpeed = 0.05 ;
+	skeleton.animationPropertiesOverride.loopMode = 1 ;
+	var animRange = skeleton.getAnimationRange( 'slash' ) ;
+	console.log( skeleton ) ;
+	console.log( animRange ) ;
+	scene.beginAnimation( skeleton , animRange.from , animRange.to , true ) ;
+	//var orientationCube = imported.meshes[ 0 ] ;
+	//orientationCube.position.z = 5 ;
 	//*/
 }
 

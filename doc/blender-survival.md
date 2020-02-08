@@ -129,6 +129,17 @@
 
 
 
+## Texture and UV-mapping
+
+See this [video](https://www.youtube.com/watch?v=Y7M-B6xnaEM).
+
+* Select the “Shading” workspace
+* Select the object
+* Select the “Edit” mode
+* In the bottom viewport, choose “UV Editor”
+
+
+
 ## Bones, skinning
 
 * Add a bone: Shift-A “add armature” > “single bone”
