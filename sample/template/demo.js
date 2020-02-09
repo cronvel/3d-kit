@@ -230,7 +230,7 @@ async function createScene() {
 	imported = await Babylon.SceneLoader.ImportMeshAsync( "ArmAndSword" , "../models/slash.babylon" , null , scene ) ;
 	console.log( "Imported:" , imported ) ;
 	var slashModel = imported.meshes[ 0 ] ;
-	slashModel.position.z = 5 ;
+	slashModel.position.z = 3 ;
 	var skeleton = imported.skeletons[ 0 ] ;
 	skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride() ;
 	skeleton.animationPropertiesOverride.enableBlending = true ;
