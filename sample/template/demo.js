@@ -28,9 +28,7 @@
 
 
 
-const tdk = require( '../..' ) ;
-const Babylon = require( 'babylonjs' ) ;
-require( 'babylonjs-loaders' ) ;	// No need to assign it, it's a plugin, it will modify BABYLON all by itself
+const Babylon = tdk.Babylon ;
 
 
 
