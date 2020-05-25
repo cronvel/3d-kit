@@ -9,7 +9,8 @@
   "dependencies": {
     "babylonjs": "^4.1.0",
     "babylonjs-loaders": "^4.1.0",
-    "math-kit": "^0.12.9"
+    "electron": "^9.0.0",
+    "math-kit": "^0.12.10"
   },
   "devDependencies": {},
   "scripts": {},
