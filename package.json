@@ -1,6 +1,6 @@
 {
   "name": "3d-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A small 3D kit using Three.js.",
   "main": "lib/tdk.js",
   "directories": {
@@ -9,10 +9,11 @@
   "dependencies": {
     "babylonjs": "^4.1.0",
     "babylonjs-loaders": "^4.1.0",
-    "electron": "^9.0.0",
     "math-kit": "^0.12.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron": "^9.0.0"
+  },
   "scripts": {},
   "repository": {
     "type": "git",
