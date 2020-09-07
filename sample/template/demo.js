@@ -50,7 +50,7 @@ async function createScene() {
 	// Create the scene space
 	scene = new Babylon.Scene( engine ) ;
 
-	// Important, because by default the coordinate system is like DirectX (left-handed) not like math and OpneGL (right-handed)
+	// Important, because by default the coordinate system is like DirectX (left-handed) not like math and OpenGL (right-handed)
 	scene.useRightHandedSystem = true ;
 
 
